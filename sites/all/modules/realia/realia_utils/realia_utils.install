@@ -1,0 +1,279 @@
+<?php
+
+
+/**
+ * Add google map field to property
+ */
+function realia_utils_update_7001() {
+  $map_field = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_map',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'google_map_field',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'google_map_field',
+  );
+
+  $map_instance = array(
+    'bundle' => 'apartment',
+    'default_value' => array(
+      0 => array(
+        'fname' => 'field-map',
+        'name' => '',
+        'lat' => 51.5190684067,
+        'lon' => -0.116616210938,
+        'zoom' => 9,
+        'center_on' => '',
+        'do_center' => 'center',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'google_map_field',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_map',
+    'label' => 'Map',
+    'required' => 0,
+    'settings' => array(
+      'cardinality' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'google_map_field',
+      'settings' => array(),
+      'type' => 'google_map_field_widget',
+      'weight' => 17,
+    ),
+  );
+
+  $info = field_info_field('field_map');
+  if (!$info) {
+    field_create_field($map_field);
+    field_create_instance($map_instance);
+  }
+}
+
+/**
+ * Update values for new map field - from old lat/lon fields
+ */
+function realia_utils_update_7002() {
+  $properties = node_load_multiple(array(), array('type' => 'apartment'));
+
+  foreach ($properties as $property) {
+    $property->field_map['und'][0]['lat'] = $property->field_latitude['und'][0]['value'];
+    $property->field_map['und'][0]['lon'] = $property->field_longitude['und'][0]['value'];
+
+    node_save($property);
+  }
+}
+
+/**
+ * Create new view for map
+ */
+function realia_utils_update_7003() {
+
+  $view = new view();
+  $view->name = 'apartment_map_v2';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Apartment map V2';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Apartment map';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'aviators_map';
+  $handler->display->display_options['style_options']['class'] = '';
+  $handler->display->display_options['style_options']['class_field'] = 'tid';
+  $handler->display->display_options['style_options']['map_field'] = 'field_map';
+  $handler->display->display_options['style_options']['enable_cluster'] = 1;
+  $handler->display->display_options['style_options']['clustering_size'] = '60';
+  $handler->display->display_options['style_options']['zoom'] = '15';
+  $handler->display->display_options['style_options']['width'] = '100%';
+  $handler->display->display_options['style_options']['height'] = '550px';
+  $handler->display->display_options['style_options']['default_position'] = 'center';
+  $handler->display->display_options['style_options']['overview_map_control'] = 1;
+  $handler->display->display_options['style_options']['pan_control_position'] = '0';
+  $handler->display->display_options['style_options']['scale_control_position'] = '0';
+  $handler->display->display_options['style_options']['rotate_control_position'] = '0';
+  $handler->display->display_options['style_options']['zoom_control_position'] = '4';
+  $handler->display->display_options['style_options']['streetview_control_position'] = '4';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Relationship: Content: Type (field_type) */
+  $handler->display->display_options['relationships']['field_type_tid']['id'] = 'field_type_tid';
+  $handler->display->display_options['relationships']['field_type_tid']['table'] = 'field_data_field_type';
+  $handler->display->display_options['relationships']['field_type_tid']['field'] = 'field_type_tid';
+  $handler->display->display_options['relationships']['field_type_tid']['required'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Latitude */
+  $handler->display->display_options['fields']['field_latitude']['id'] = 'field_latitude';
+  $handler->display->display_options['fields']['field_latitude']['table'] = 'field_data_field_latitude';
+  $handler->display->display_options['fields']['field_latitude']['field'] = 'field_latitude';
+  $handler->display->display_options['fields']['field_latitude']['exclude'] = TRUE;
+  /* Field: Content: Longitude */
+  $handler->display->display_options['fields']['field_longitude']['id'] = 'field_longitude';
+  $handler->display->display_options['fields']['field_longitude']['table'] = 'field_data_field_longitude';
+  $handler->display->display_options['fields']['field_longitude']['field'] = 'field_longitude';
+  $handler->display->display_options['fields']['field_longitude']['exclude'] = TRUE;
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_image']['id'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['table'] = 'field_data_field_image';
+  $handler->display->display_options['fields']['field_image']['field'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_image']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => '',
+  );
+  /* Field: Taxonomy term: Map icon */
+  $handler->display->display_options['fields']['field_map_icon']['id'] = 'field_map_icon';
+  $handler->display->display_options['fields']['field_map_icon']['table'] = 'field_data_field_map_icon';
+  $handler->display->display_options['fields']['field_map_icon']['field'] = 'field_map_icon';
+  $handler->display->display_options['fields']['field_map_icon']['relationship'] = 'field_type_tid';
+  $handler->display->display_options['fields']['field_map_icon']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_map_icon']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_map_icon']['settings'] = array(
+    'image_style' => '',
+    'image_link' => '',
+  );
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'apartment' => 'apartment',
+  );
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_image']['id'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['table'] = 'field_data_field_image';
+  $handler->display->display_options['fields']['field_image']['field'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['label'] = '';
+  $handler->display->display_options['fields']['field_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_image']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => '',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Location */
+  $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
+  $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
+  $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
+  $handler->display->display_options['fields']['field_location']['label'] = '';
+  $handler->display->display_options['fields']['field_location']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_location']['click_sort_column'] = 'value';
+  $handler->display->display_options['fields']['field_location']['type'] = 'text_default';
+  $handler->display->display_options['fields']['field_location']['group_column'] = 'value';
+  /* Field: Content: Area */
+  $handler->display->display_options['fields']['field_area']['id'] = 'field_area';
+  $handler->display->display_options['fields']['field_area']['table'] = 'field_data_field_area';
+  $handler->display->display_options['fields']['field_area']['field'] = 'field_area';
+  $handler->display->display_options['fields']['field_area']['settings'] = array(
+    'thousand_separator' => ' ',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Price */
+  $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
+  $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['label'] = '';
+  $handler->display->display_options['fields']['field_price']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_price']['type'] = 'number_decimal';
+  $handler->display->display_options['fields']['field_price']['settings'] = array(
+    'thousand_separator' => ' ',
+    'decimal_separator' => '.',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+  /* Field: Content: Map */
+  $handler->display->display_options['fields']['field_map']['id'] = 'field_map';
+  $handler->display->display_options['fields']['field_map']['table'] = 'field_data_field_map';
+  $handler->display->display_options['fields']['field_map']['field'] = 'field_map';
+  $handler->display->display_options['fields']['field_map']['label'] = '';
+  $handler->display->display_options['fields']['field_map']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_map']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_map']['click_sort_column'] = 'lat';
+  $handler->display->display_options['fields']['field_map']['type'] = 'google_map_field_aviators';
+  /* Field: Taxonomy term: Term ID */
+  $handler->display->display_options['fields']['tid']['id'] = 'tid';
+  $handler->display->display_options['fields']['tid']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['tid']['field'] = 'tid';
+  $handler->display->display_options['fields']['tid']['relationship'] = 'field_type_tid';
+  $handler->display->display_options['fields']['tid']['label'] = '';
+  $handler->display->display_options['fields']['tid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['tid']['element_label_colon'] = FALSE;
+
+
+  views_save_view($view);
+}
+

@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ * @return array
+ */
+function realia_cta_menu() {
+  $items = array();
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission()
+ * @return array
+ */
+function realia_cta_permission() {
+  return array();
+}
+
+/**
+ * Implements hook_entity_info_alter()
+ * @param $info
+ */
+function realia_cta_entity_info_alter(&$info) {
+  $info['node']['view modes']['cta'] = array(
+    'label' => t('Call to action'),
+    'custom settings' => TRUE,
+  );
+}
+
+/**
+ * Implements hook_realia_features()
+ * @return array
+ */
+function realia_cta_realia_features() {
+  return array('realia_f_cta' => array('weight' => 9));
+}
+
+/**
+ * Implements hook_form_alter()
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function realia_cta_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'call_to_action_node_form') {
+    $node = & $form['#node'];
+
+    $form['class'] = array(
+      '#type' => 'select',
+      '#title' => t('Icon Graphics'),
+      '#options' => arraY(
+        0 => t('None'),
+        'address' => t('Address Icon'),
+        'gps' => t('GPS Icon'),
+        'key' => t('Key Icon'),
+      ),
+      '#default_value' => isset($node->class) ? $node->class : 0,
+    );
+
+    $form['#submit'][] = 'realia_cta_form_alter_submit';
+  }
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function realia_cta_form_alter_submit($form, &$form_state) {
+  $node = $form['#node'];
+  $node->class = $form_state['values']['class'];
+}
+
+/**
+ * Implements hook_node_insert
+ * @param $node
+ */
+function realia_cta_node_insert($node) {
+  if ($node->type == 'call_to_action') {
+    if (isset($node->class)) {
+      $record['class'] = $node->class;
+    }
+    else {
+      return;
+    }
+
+    if (isset($node->nid)) {
+      $record['nid'] = $node->nid;
+      $class = _realia_cta_load_class($node->nid);
+      $record['id'] = $class['id'];
+    }
+    else {
+      return;
+    }
+
+    if (isset($record['id'])) {
+      drupal_write_record('realia_cta_class', $record, 'id');
+    }
+    else {
+      drupal_write_record('realia_cta_class', $record);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update
+ * @param $node
+ */
+function realia_cta_node_update($node) {
+  realia_cta_node_insert($node);
+}
+
+/**
+ * @param $nodes
+ * @param $types
+ */
+function realia_cta_node_load($nodes, $types) {
+  if (in_array('call_to_action', $types)) {
+    foreach ($nodes as &$node) {
+      $node->class = _realia_cta_load_class($node->nid);
+    }
+  }
+}
+
+/**
+ * @param $nid
+ * @return array
+ */
+function _realia_cta_load_class($nid) {
+  $result = db_select('realia_cta_class', 'rcc')
+    ->condition('nid', $nid)
+    ->fields('rcc')
+    ->execute()->fetchAssoc();
+
+  if ($result) {
+    return $result;
+  }
+
+  return array();
+}
+
+function _realia_cta_save_class() {
+
+}
+
+/**
+ * Implements hook_node_info().
+ */
+function realia_cta_node_info() {
+  $items = array(
+    'call_to_action' => array(
+      'name' => t('Call to action'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
+  );
+
+  return $items;
+}

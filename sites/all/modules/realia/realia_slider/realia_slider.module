@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function realia_slider_menu() {
+  $items = array();
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_realia_features()
+ * @return array
+ */
+function realia_slider_realia_features() {
+  return array('realia_f_slider' => array('weight' => 5));
+}
+
+/**
+ * Implements hook_node_info().
+ * @return array
+ */
+function realia_slider_node_info() {
+  $items = array(
+    'slider' => array(
+      'name' => t('Slider'),
+      'base' => 'node_content',
+      'description' => t('Various slider displayed on the site'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
+  );
+
+  return $items;
+}

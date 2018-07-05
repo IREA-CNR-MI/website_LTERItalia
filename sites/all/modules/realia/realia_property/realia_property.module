@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function realia_property_menu() {
+  $items = array();
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_init()
+ */
+function realia_property_init() {
+
+  // revert all features
+  if(drupal_is_front_page() && variable_get('realia_revert', 0) == 1) {
+    variable_set('realia_revert', 2);
+    features_revert();
+  }
+}
+
+/**
+ * Implements hook_realia_features()
+ * @return array
+ */
+function realia_property_realia_features() {
+  return array('realia_f_property' => array('weight' => 1));
+}
+
+/**
+ * Implements hook_node_info().
+ * @return array
+ */
+function realia_property_node_info() {
+  // @todo - rename to property
+  $items = array(
+    'apartment' => array(
+      'name' => t('Property'),
+      'base' => 'node_content',
+      'description' => t('Apartments, Houses, Condos ...'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_entity_info_later
+ * @param $info
+ */
+function realia_property_entity_info_alter(&$info) {
+  $info['node']['view modes']['full']['custom settings'] = TRUE;
+}

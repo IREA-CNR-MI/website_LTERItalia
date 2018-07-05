@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function realia_gallery_menu() {
+  $items = array();
+
+  return $items;
+}
+
+function realia_gallery_init() {
+
+}
+
+/**
+ * Implements hook_realia_features()
+ * @return array
+ */
+function realia_gallery_realia_features() {
+  return array('realia_f_gallery' => array('weight' => 8));
+}
+
+/**
+ * Implements hook_node_info().
+ * @return array
+ */
+function realia_gallery_node_info() {
+  $items = array(
+    'gallery' => array(
+      'name' => t('Gallery'),
+      'base' => 'node_content',
+      'description' => t('Content type for creating simple galleries'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
+  );
+  return $items;
+}

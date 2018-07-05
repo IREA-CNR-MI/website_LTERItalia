@@ -1,0 +1,4 @@
+name = Realia Slider
+description = Provides content type definition for Realia Slider
+core = 7.x
+package = Realia

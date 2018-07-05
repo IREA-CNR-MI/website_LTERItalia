@@ -1,0 +1,76 @@
+form {
+  label { font-weight: normal; }
+  .webform-component { margin-bottom: 10px; }
+}
+
+textarea, input[type=text], input[type=password], input[type=email] {
+  -webkit-font-smoothing: antialiased; -webkit-appearance: none;
+  @include background-image(none); @include border-radius(0px); @include box-shadow(none);
+  background-image: none;  border: 1px solid $gray-medium; color: $gray; margin: 0px; padding: 6px;
+  &:active, &:focus { @include box-shadow(none); border: 1px solid $gray-medium; outline: 0px; }
+}
+
+button.form-submit {
+  @include transition(background-color .2s ease-in); @include background-image(none); @include border-radius(0px); @include box-shadow(none); @include text-shadow(none); @include transition(background-color .2s ease-in);
+  background-color: $blue-light; background-image: url('../img/arrow-right-white.png'); background-position: 90% center; background-repeat: no-repeat; background-size: 8px 11px; border: 0px; padding: 7px 32px 7px 15px;
+  &:active, &:focus, &:hover { @include box-shadow(none); @include transition(background-color .2s ease-in); background-color: darken($blue-light, 10%); background-position: 90% center; }
+  @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+    background-image: url('../img/arrow-right-white@2x.png');
+  }
+}
+
+.form-required { color: red; }
+.form-type-checkbox { padding-bottom: 7px; }
+
+.chzn-container {
+	.chzn-single { @include background-image(none); @include border-radius(0px); @include box-shadow(none); @include filter-gradient(#fff, #fff); background-image: none; border: 0px; height: 40px; line-height: 40px;
+		&.chzn-single-with-drop { background-color: #ffffff; }
+		div { background-image: none; width: 36px;
+			b { @include background-image(none); background-image: url('../img/arrow-bottom-black.png') !important; background-size: 11px 7px !important; background-position: center center; background-repeat: no-repeat; }
+		}
+	}
+
+	.chzn-drop { @include shadow; @include border-radius(0px); border: 0px;
+		.chzn-search { border: 0px;
+			input { @include background-image(none); background-image: url('../img/icons/search.png'); background-position: 95% center; background-repeat: no-repeat; border: 1px solid $gray; width: 100% !important; }
+		}
+		.chzn-results {
+			.active-result { padding: 10px 5px; 
+				&.highlighted,
+				&.result-selected { @include background-image(none); background-color: $blue; color: #ffffff; }
+			}
+		}
+	}
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+  .chzn-container {
+    .chzn-single {
+      div {
+        b { background-image: url('../img/arrow-bottom-black@2x.png') !important; }
+      }
+    }
+  }
+}
+
+.ui-slider-horizontal { @include background-image(none); @include border-radius(0px); background-color: $blue-dark; border: 0px; height: 5px; 
+	.ui-slider-range { @include background-image(none); @include border-radius(0px); @include box-shadow(0px); background-color: #ffffff; border: 0px; }
+	.ui-slider-handle { @include background-image(none); @include border-radius(0px); background-color: transparent; background-image: url('../img/icons/slider-handle.png'); background-position: center center; background-repeat: no-repeat; background-size: 19px 19px; border: 0px; cursor: pointer; height: 19px; top: -7px; width: 19px;
+		@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+			background-image: url('../img/icons/slider-handle@2x.png');
+		}
+		&:focus, &:active { @include box-shadow(none); outline: 0px; }
+	}
+}
+
+#content {
+	.webform-client-form {
+		#webform-component-email { clear: left; float: left; width: 48%; 
+			input { @include box-sizing(border-box); height: 36px; width: 100%; }
+		}
+		#webform-component-name {  clear: right; float: right; width: 48%; 
+			input { @include box-sizing(border-box); height: 36px; width: 100%; }
+		}
+		#webform-component-text { float: left; width: 100%; }
+	}
+}

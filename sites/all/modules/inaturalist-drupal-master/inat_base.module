@@ -1,0 +1,77 @@
+<?php
+  /**
+   * iNaturalist login module
+   * Copyright 2014 Projecte Ictineo SCCL (www.projecteictineo.com)
+   * aGPLv3
+   */
+
+/**
+ * Implements hook_install()
+ */
+function inat_base_enable() {
+  if ( !menu_load('menu-inaturalist')) {
+    $menu = array(
+      'menu_name' => 'menu-inaturalist',
+      'title' => t('iNaturalist menu'),
+      'description' => t('The iNaturalist menu contains access iNaturalist modules pages, like in site www.inaturalist.org'),
+    );
+    
+    menu_save($menu);
+  }
+}
+
+/**
+ * Implements hook_menu()
+ * Adding configuration pages
+ */
+function inat_base_menu() {
+  $menu['admin/config/inaturalist'] = array (
+    'title' => t('iNaturalist'),
+    'description' => t('iNaturalist basic and advanced configuration'),
+    'position' => 'left',
+    'weight' => -100,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer site configuration'),                                                                   
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $menu['admin/config/inaturalist/config'] = array (
+    'title' => t('iNaturalist configurations'),
+    'description' => t('Basic configurations for iNaturalist modules'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('inat_base_page_config'),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer site configuration'),                                                                   
+  );
+  return $menu;
+}
+
+/**
+ * Helper functions
+ */
+function inat_base_page_config() {
+  $form['inat_base_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Base URL of iNaturalist'),
+    '#description' => t('The URL used to access iNaturalist data, for example http://www.inaturalist.org'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('inat_base_url', 'http://www.inaturalist.org'),
+  );
+  $form['inat_base_project'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Reduce plugin behavior to this project'),
+    '#description' => t('The project id to reduce the plugin behavior'),
+    '#required' => FALSE,
+    '#default_value' => variable_get('inat_base_project', ''),
+  );
+  $form['inat_base_user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Reduce plugin behavior to this user'),
+    '#description' => t('The user loginname to reduce the plugin behavior'),
+    '#required' => FALSE,
+    '#default_value' => variable_get('inat_base_user', ''),
+  );
+
+
+  return system_settings_form($form);
+}

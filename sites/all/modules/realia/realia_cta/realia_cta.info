@@ -1,0 +1,4 @@
+name = Realia Apartment
+description = Provides content type definition for Realia Apartment
+core = 7.x
+package = Realia

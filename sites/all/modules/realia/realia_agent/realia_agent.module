@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function realia_agent_menu() {
+  $items = array();
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_realia_features()
+ * @return array
+ */
+function realia_agent_realia_features() {
+  return array('realia_f_agents' => array('weight' => 10));
+}
+
+/**
+ * Implements hook_node_info().
+ * @return array
+ */
+function realia_agent_node_info() {
+  $items = array(
+    'agent' => array(
+      'name' => t('Agent'),
+      'base' => 'node_content',
+      'description' => t('Agents in our Realia agency'),
+      'has_title' => '1',
+      'title_label' => t('Name'),
+      'help' => '',
+    ),
+  );
+
+  return $items;
+}

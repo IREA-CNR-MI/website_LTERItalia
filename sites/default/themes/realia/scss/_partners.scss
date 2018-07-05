@@ -1,0 +1,20 @@
+#block-views-partner-block {
+	.view-partner {
+		.view-content { background-color: #fff; overflow: hidden; padding: 20px; 
+			.views-row { display: inline-block; vertical-align: middle; width: 19%; text-align: center; 
+			}
+		}
+	}
+}
+
+@media (max-width: 767px) {
+	#block-views-partner-block { padding-left: 20px; padding-right: 20px; 
+		.view-partner {
+			.view-content {
+				.views-row { display: block; margin-bottom: 30px; width: auto; 
+					&:last-child { margin-bottom: 0px; }
+				}
+			}
+		}
+	}
+}

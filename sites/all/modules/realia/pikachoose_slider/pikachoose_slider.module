@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function pikachoose_slider_menu() {
+  $items = array();
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function pikachoose_slider_views_api() {
+  return array(
+    'api' => 3.0,
+  );
+}
+
+/**
+ * Implements hook_theme()
+ */
+function pikachoose_slider_theme() {
+  return array(
+    'pikachoose_slider' => array(
+      'variables' => array('form' => NULL),
+    ),
+  );
+}
+
+/**
+ * @param $variables
+ */
+function template_preprocess_pikachoose_slider(&$variables) {
+  // @todo - external library
+  // load js
+  $path = drupal_get_path('module', 'pikachoose_slider');
+  drupal_add_js($path . '/js/jquery.jcarousel.min.js');
+  drupal_add_js($path . '/js/jquery.pikachoose.min.js');
+  drupal_add_js($path . '/js/pikachoose_slider.js');
+  drupal_add_css($path . '/js/pikachoose.css');
+
+  $view = $variables['view'];
+
+  $records = $variables['rows'];
+  $options = $variables['options'];
+
+  $id = 'pikachoose-' . str_replace('_', '-', $view->name);
+
+  drupal_add_js(array('pikachoose' => array(
+    'id' => $id,
+    'hoverPause' => FALSE,
+    'autoPlay' => TRUE,
+    'carousel' => TRUE,
+    'speedInteger' => 5000,
+  )), 'setting');
+
+  $variables['pikachoose_attributes'] = array(
+    'id' => $id,
+    'class' => array('pikachoose-slider', 'pikachoose'),
+  );
+}

@@ -1,0 +1,139 @@
+<?php
+
+require_once 'aviators_map.field.inc';
+/**
+ * Implements hook_views_api().
+ */
+function aviators_map_views_api() {
+  return array(
+    'api' => 3.0,
+  );
+}
+
+function aviators_map_views_post_execute(&$view) {
+
+
+  if(!count($view->result) && $view->plugin_name == "aviators_map") {
+    $view->result[] = array(
+      'node_title' => 'none',
+    );
+  }
+
+
+}
+
+  /**
+ * Implements hook_theme()
+ * @return array
+ */
+function aviators_map_theme() {
+  return array(
+    'aviators_map_view' => array(
+      'variables' => array('form' => NULL),
+    ),
+  );
+}
+
+/**
+ * Preprocess function form views - gmap style plugin
+ * @param $variables
+ */
+function template_preprocess_aviators_map_view(&$variables) {
+
+  global $base_url;
+  module_load_include('inc', 'gmap3_tools');
+
+  // Map markers
+  $markers = array();
+  $view = $variables['view'];
+  $result = $variables['rows'];
+  $rows = $variables['rows'];
+
+  // settings
+  $options = $view->style_plugin->options;
+  // style handler
+  $handler = $view->style_plugin;
+
+  // rendered fields for each result row - we are getting higher level of granularity here
+  $field_renders = $handler->render_fields($result);
+
+  // @todo - these should be forced into drupal_variables array
+  $variables['width'] = $options['width'];
+  $variables['height'] = $options['height'];
+
+  $markers = array();
+  foreach ($field_renders as $delta => $field_render) {
+
+    list($latitude, $longitude) = explode(":", $field_render[$options['map_field']]);
+
+    if (empty($latitude) || empty($longitude)) {
+      continue;
+    }
+
+    $attributes['icon'] = $base_url . '/' . drupal_get_path('module', 'aviators_map') . '/marker-transparent.png';
+    $attributes['class'] = implode(' ', array_merge(array('term-' . strip_tags($field_render[$options['class_field']])), array($options['class'])));
+
+
+    // create marker as we have data about position, icon, and 'content' of marker (rendered row)
+    $markers[$delta] = gmap3_tools_create_marker($latitude, $longitude, NULL, $rows[$delta], $attributes);
+  }
+
+
+  // unique identifier
+  $variables['view_id'] = 'gmap-' . str_replace('_', '-', $view->name);
+
+  $controlNames = array(
+    'pan_control_position' => 'panControl',
+    'scale_control_position' => 'scaleControl',
+    'zoom_control_position' => 'zoomControl',
+    'streetview_control_position' => 'streetViewControl',
+  );
+
+  foreach ($controlNames as $index => $controlName) {
+    $controls[$controlName] = FALSE;
+    if ($options[$index]) {
+      $controls[$controlName . 'Options'] = array(
+        'position' => $options[$index]
+      );
+      $controls[$controlName] = TRUE;
+    };
+  }
+
+  $mapOptions = array_merge(
+    array(
+      'centerX' => $options['map_latitude'],
+      'centerY' => $options['map_longitude'],
+      'center' => $options['default_position'],
+      'zoom' => (int) $options['zoom'],
+      'mapTypeId' => GMAP3_TOOLS_MAP_TYPE_ID_ROADMAP,
+      'scrollwheel' => FALSE,
+    ),
+    $controls
+  );
+
+
+
+  // generate map settings
+  gmap3_tools_add_map(
+    array(
+      'clustering' => array(
+        'enable' => $options['enable_cluster'],
+        'gridSize' => !empty($options['clustering_size']) ? $options['clustering_size'] : 60,
+      ),
+      'mapId' => $variables['view_id'],
+      'mapOptions' => $mapOptions,
+      'gmap3ToolsOptions' => array(
+        // Close current opened infoWindow when opening new one.
+        'closeCurrentInfoWindow' => TRUE,
+        // Default position and zoom level of markers on map.
+        'defaultMarkersPosition' => $options['default_position'],
+      ),
+      'markers' => $markers,
+    )
+  );
+
+
+  drupal_add_js(drupal_get_path('module', 'aviators_map') . '/infobox.js');
+  drupal_add_js(drupal_get_path('module', 'aviators_map') . '/styledMarker.js');
+  drupal_add_js(drupal_get_path('module', 'aviators_map') . '/clusterer.js');
+}

@@ -1,0 +1,88 @@
+body.node-type-apartment {
+  article.node { @include shadow; background-color: #fff; padding: 20px;
+    .overview { border: 1px solid $gray-light; margin: 0px 30px 10px 0px; padding: 20px;
+      h2 { clear: both; line-height: 1; margin: 0px 0px 20px 0px; }
+      .table { display: table; margin: 0px;
+        .field { display: table-row;
+          .field-label { display: table-cell; padding-bottom: 10px; }
+          .field-items { display: table-cell; padding-bottom: 10px; }
+          &:last-child {
+            .field-label { padding-bottom: 0px; }
+            .field-items { padding-bottom: 0px; }
+          }
+        }
+      }
+    }
+
+    ul { list-style: none;
+      li {
+        &.checked { background-image: url('../img/icons/nike.png'); background-position: left center; background-repeat: no-repeat; background-size: 11px 9px; padding-bottom: 3px; padding-left: 20px; padding-top: 3px;
+          @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) { background-image: url('../img/icons/nike@2x.png'); }
+        }
+        &.plain { background-image: url('../img/icons/cross.png'); background-position: left center; background-repeat: no-repeat; background-size: 11px 9px; padding-bottom: 3px; padding-left: 20px; padding-top: 3px;
+          @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) { background-image: url('../img/icons/cross@2x.png'); }
+        }
+      }
+    }
+  }
+  section {
+    .block-views { @include shadow; background-color: #ffffff; padding: 20px; }
+  }
+}
+
+@media (max-width: 767px) {
+  body.node-type-apartment {
+    section {
+      .overview { float: none; margin: 0px 0px 20px 0px !important; }
+      .block-views { margin-left: 20px; margin-right: 20px; }
+    }
+  }
+}
+
+#block-views-apartment-gallery-block { @include box-shadow(none); background-color: transparent; margin-bottom: 30px; padding: 0px;
+  h2 { display: none; }
+
+  .pika-stage { @include border-radius(0px); background-color: transparent; border: 0px; height: auto !important; margin: 0px 0px 10px 0px; padding: 0px; width: auto;
+    .pika-textnav { bottom: -70px; margin: 0px; position: absolute; z-index: 100; width: 100%; }
+    .pika-imgnav {
+      .next, .previous { display: none; }
+    }
+
+    img { height: auto !important; width: 100% !important; }
+    .previous { 
+      @include transition(opacity .2s linear); background-color: $blue; background-image: url('../img/arrow-left-white.png'); background-position: center center; background-repeat: no-repeat; background-size: 8px 11px; color: transparent; cursor: pointer; height: 40px; margin: 0px; padding: 0px; left: 0px; top: 50%; width: 40px;
+      @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+        background-image: url('../img/arrow-left-white@2x.png');
+      }
+    }
+
+    .next { 
+      @include transition(opacity .2s linear); background-color: $blue; background-image: url('../img/arrow-right-white.png'); background-position: center center; background-repeat: no-repeat; background-size: 8px 11px; color: transparent; cursor: pointer; height: 40px; margin: 0px; padding: 0px; right: 0px; top: 50%; width: 40px;
+      @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+        background-image: url('../img/arrow-right-white@2x.png');
+      }
+    }
+  }
+
+  .jcarousel-container { margin: 0px 45px; z-index: 100;
+    .jcarousel-clip { overflow: hidden; }
+    ul {
+      .jcarousel-item { @include border-radius(0px); background-color: transparent; border: 0px; margin: 0px 4px; padding: 0px; }
+    }
+  }
+}
+
+#pikachoose-apartment-gallery {
+  width: 100% !important;
+  li {
+    float: left !important;
+    max-width: 30%;
+  }
+}
+
+@media (max-width: 767px) {
+  #block-views-apartment-gallery-block { margin-left: 20px; margin-right: 20px; }
+  #pikachoose-apartment-gallery {
+    height: auto !important;
+  }
+}

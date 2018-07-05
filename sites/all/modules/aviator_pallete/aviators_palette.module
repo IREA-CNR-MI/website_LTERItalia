@@ -1,0 +1,224 @@
+<?php
+
+require_once 'aviators_palette.inc';
+
+/**
+ * Implements hook_menu()
+ * @return array
+ */
+function aviators_palette_menu() {
+  $items = array();
+
+  $items['admin/config/user-interface/palette'] = array(
+    'title' => 'Palette settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('aviators_palette_form_admin'),
+    'access arguments' => array('access palette admin'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission
+ * @return array
+ */
+function aviators_palette_permission() {
+  return array(
+    'access palette admin' => array(
+      'title' => t('Access aviators palette admin')
+    )
+  );
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function aviators_palette_form_admin($form, &$form_state) {
+  $form['aviators_palette_enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable on fronted'),
+    '#description' => t('Display palette for presentational use for all users'),
+    '#default_value' => variable_get('aviators_palette_enable', 1)
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_init()
+ */
+function aviators_palette_init() {
+
+}
+
+function aviators_palette_page_build(&$page) {
+  if (path_is_admin(current_path())) {
+    return;
+  }
+
+  if(variable_get('aviators_palette_enable', 1)) {
+    $form = drupal_get_form('aviators_palette_form');
+    $palette = theme('aviators_palette', array('form' => $form));
+    $page['footer']['aviators_palette']['#markup'] = $palette;
+  }
+
+  $palette = AviatorsPalette::getPalette();
+
+  $page['footer']['aviators_css']['#markup'] =
+    '<div id="aviators-css-inject">' .
+      $palette->applyCss() . $palette->applyJs() . '</div>';
+}
+
+
+function aviators_palette_form($form, &$form_state) {
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'aviators_palette') . '/css/aviators_palette.css'
+  );
+
+  // get styles from theme
+  $styles = aviators_palette_collect_styles();
+
+  $palette = AviatorsPalette::getPalette();
+  $settings = $palette->getCss();
+
+  foreach ($styles as $group_id => $group) {
+    $options = array();      
+
+    foreach ($group['css'] as $delta => $css) {
+      $options[$delta] = $css['label'];
+    }
+
+    if(isset($group['class'])) {
+      $group['class'][] = 'controls';
+    } else {
+      $group['class'] = array('controls');
+    }
+
+
+    $form[$group_id] = array(
+      '#type' => 'radios',
+      '#title' => $group['label'],
+      '#attributes' => array(
+        'class' => isset($group['class']) ? $group['class'] : array()
+      ),
+      // '#id' => str_replace('_', '-', $group_id . '-' . $delta),
+      '#ajax' => array(
+        'wrapper' => 'aviators-css-inject',
+        'method' => 'html',
+        'callback' => 'aviators_palette_ajax_form'
+      ),
+      '#options' => $options,
+      '#default_value' => isset($settings[$group_id]) ? array(key($settings[$group_id]) => key($settings[$group_id])) : NULL,
+    );
+  }
+
+  $form['styles']['#value'] = $styles;
+
+  $options = array();
+  foreach ($styles as $delta => $style) {
+    $options[$delta] = $style['label'];
+
+  }
+
+  $form['reset'] = array(
+    '#type' => 'submit',
+    '#value' => t('Reset'),
+    '#ajax' => array(
+      'wrapper' => 'aviators-css-inject',
+      'method' => 'html',
+      'callback' => 'aviators_palette_ajax_form_reset'
+    )
+  );
+
+  return $form;
+}
+
+function aviators_palette_collect_styles() {
+
+  $theme = variable_get('theme_default');
+  $function = $theme . '_aviators_collect_styles';
+  $styles = array();
+
+  if (function_exists($function)) {
+    $styles = $function();
+  }
+
+  return $styles;
+}
+
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return array
+ */
+function aviators_palette_ajax_form_reset(&$form, &$form_state) {
+  $palette = AviatorsPalette::getPalette();
+  $commands = array();
+
+  $palette->resetCss($commands);
+  $applyCss = $palette->applyCss($commands);
+
+  $palette->storeCss();
+
+  $commands[] = ajax_command_html('#aviators-css-inject', $applyCss);
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+function aviators_palette_form_submit(&$form, &$form_state) {
+
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return array
+ */
+function aviators_palette_ajax_form(&$form, &$form_state) {
+  $form_state['rebuild'] = TRUE;
+
+  $values = $form_state['values'];
+  $styles = $form['styles']['#value'];
+
+  $palette = AviatorsPalette::getPalette();
+
+  $commands = array();
+  foreach ($styles as $group_id => $group) {
+
+    if(!is_array($values[$group_id])) {
+      $style = $values[$group_id];
+      $css = $styles[$group_id]['css'][$style];
+      // adding stylesheet, but also collecting disable commands
+      $palette->addCss($group_id, $style, $css, $commands);
+    }
+  }
+
+  // generating css output but also collecting enable commands
+  $apply_css = $palette->applyCss($commands);
+
+  $palette->storeCss();
+  $commands[] = ajax_command_html('#aviators-css-inject', $apply_css);
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+/**
+ * Implements hook_theme()
+ */
+function aviators_palette_theme() {
+  return array(
+    'aviators_palette' => array(
+      'variables' => array('form'),
+      'template' => 'aviators-palette',
+    )
+  );
+}
+
+
+function theme_aviators_palette_form(&$variables) {
+
+}
+

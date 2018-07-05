@@ -1,0 +1,7 @@
+name = Realia Utils
+description = Realia utility functions
+core = 7.x
+package = Realia
+
+files[] = realia.views.inc
+files[] = realia_utils_plugins_style_grid.inc

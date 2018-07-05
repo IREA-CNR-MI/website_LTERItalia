@@ -1,0 +1,672 @@
+<?php
+  /**
+   * iNaturalist observations module
+   * Copyright 2014 Projecte Ictineo SCCL (www.projecteictineo.com)
+   * aGPLv3
+   */
+
+/**
+ * Implements hook_menu()
+ */
+function inat_obs_menu() {
+  $items = array();
+
+  //$items['inat/observations'] = array(
+    //'title' => t(''),
+    //'description' => t(''),
+    //'page callback' => '',
+    //'access arguments' => '',
+    //'menu_name' => 'inaturalist'
+    //'type' => MENU_NORMAL_ITEM,
+  //);
+  $project = variable_get('inat_base_project', '');
+  if($project == '') {
+    $items['inat/projects/%/%'] = array(
+      'title' => t('Projects'),
+      'description' => t('iNaturalist Observations'),
+      'page callback' => 'inat_page_projects',
+      'page arguments' => array(2,3),
+      //'access arguments' => array('access inaturalist content'),
+      'access callback' => TRUE,
+      'menu_name' => 'menu-inaturalist',
+      'type' => MENU_NORMAL_ITEM,
+    );
+    $items['inat/projects'] = $items['inat/projects/%/%'];
+    $items['inat/projects/%'] = $items['inat/projects/%/%'];
+
+    $items['inat/project/%'] = array(
+      'title' => t('Projects'),
+     // 'description' => t('iNaturalist Observations'),
+      'page callback' => 'inat_projects',
+      'page arguments' => array(2),
+      //'access arguments' => array('access inaturalist content'),
+      'access callback' => TRUE,
+      //'menu_name' => 'menu-inaturalist',
+      //'type' => MENU_NORMAL_ITEM,
+    );
+  }
+
+  $items['inat/taxa/%/%'] = array(
+    'title' => t('Species'),
+    //'description' => t('iNaturalist Species'),
+    'page callback' => 'inat_taxa',
+    'page arguments' => array(2,3),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    //'menu_name' => 'menu-inaturalist',
+    //'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/taxa/%'] = $items['inat/taxa/%/%'];
+  $items['inat/taxons/%'] = array(
+    'title' => t('Species'),
+    'description' => t('iNaturalist Species'),
+    'page callback' => 'inat_taxons',
+    'page arguments' => array(2),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    'menu_name' => 'menu-inaturalist',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/taxons'] = $items['inat/taxons/%'];
+  //$items['inat/taxa'] = array(
+    //'title' => t('Species'),
+    //'description' => t('iNaturalist Species'),
+    //'page callback' => 'inat_taxons',
+    //'page arguments' => array(2),
+    //'access arguments' => array('access inaturalist content'),
+    //'access callback' => TRUE,
+    //'menu_name' => 'menu-inaturalist',
+    //'type' => MENU_NORMAL_ITEM,
+  //);
+  $items['inat/place/%'] = array(
+    'title' => t('Places'),
+    //'description' => t('iNaturalist Species'),
+    'page callback' => 'inat_place',
+    'page arguments' => array(2),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    //'menu_name' => 'menu-inaturalist',
+    //'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/places/%'] = array(
+    'title' => t('Places'),
+    'description' => t('iNaturalist places'),
+    'page callback' => 'inat_places',
+    'page arguments' => array(2),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    'menu_name' => 'menu-inaturalist',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/places'] = $items['inat/places/%'];
+ 
+  $items['inat/user/%'] = array(
+    'title' => t('Users'),
+    //'description' => t('iNaturalist Species'),
+    'page callback' => 'inat_user',
+    'page arguments' => array(2),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    //'menu_name' => 'menu-inaturalist',
+    //'type' => MENU_NORMAL_ITEM,
+  );
+ 
+  $items['inat/observations/%'] = array(
+    'title' => t('Observations'),
+    'description' => t('iNaturalist Observations'),
+    'page callback' => 'inat_page_observations',
+    'page arguments' => array(2),
+    //'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    'menu_name' => 'menu-inaturalist',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/observations'] = $items['inat/observations/%'];
+  $items['inat/observation/%obs_id'] = array(
+    'title' => t('Observation'),
+    //'description' => t('iNaturalist Observations'),
+    'page callback' => 'inat_page_observation',
+    'page arguments' => array(2),
+    //'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    //'menu_name' => 'menu-inaturalist',
+    //'type' => MENU_NORMAL_ITEM,
+  );
+  $items['inat/add/observation'] = array(
+    'title' => t('Add observation'),
+    //'description' => t('iNaturalist Observations'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('inat_obs_obs_add'),
+    'access arguments' => array('access inaturalist content'),
+    'access callback' => TRUE,
+    'menu_name' => 'menu-inaturalist',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme
+ */
+function inat_obs_theme($existing, $type, $theme, $path) {
+  return array( 
+    'inat_projects_general' => array(
+      'variables' => array('projects' => NULL),
+      'template' => 'projects_general',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_taxa' => array(
+      'variables' => array('taxa' => NULL),
+      'template' => 'taxa',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_taxa_list' => array(
+      'variables' => array('taxons' => NULL),
+      'template' => 'taxa_list',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_place' => array(
+      'variables' => array('place' => NULL),
+      'template' => 'place',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_place_list' => array(
+      'variables' => array('places' => NULL, 'current_page' => 1),
+      'template' => 'place_list',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_user' => array(
+      'variables' => array('user' => NULL),
+      'template' => 'user',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_project' => array(
+      'variables' => array('projects' => NULL),
+      'template' => 'project',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_projects_list' => array(
+      'variables' => array('projects' => NULL),
+      'template' => 'projects_list',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_observations_general' => array(
+      'variables' => array('observations' => NULL, 'current_page' => 1, 'base_path' => 'observations'),
+      'template' => 'observations_general',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_observation_list' => array(
+      'variables' => array('observation' => NULL),
+      'template' => 'observation_list',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_observation' => array(
+      'variables' => array('observation' => NULL),
+      'template' => 'observation',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    ),
+    'inat_map' => array(
+      'variables' => array('observations' => NULL, 'context' => 'page'),
+      'template' => 'map',
+      'path' => drupal_get_path('module', 'inat_obs') . '/theme',
+    )
+ 
+  );
+}
+
+/**
+ * Implements hook_block_info()
+ */
+function inat_obs_block_info() {
+  $blocks['inat_obs_map'] = array (
+    'info' => t('iNaturalist Observations Map'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  $blocks['inat_obs_list'] = array (
+    'info' => t('iNaturalist Observations List'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+/**
+ * Implements hook_block_configure()
+ * https://api.drupal.org/api/drupal/modules!block!block.api.php/function/hook_block_configure/7
+ */
+function inat_obs_block_configure($delta = '') {
+  $form = array();
+  switch($delta) {
+    case 'inat_obs_map':
+      $form['inat_obs_block_map_count'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Number of observations to display'),
+        '#description' => t('Enter a integer value from 1 to 200'),
+        '#default_value' => variable_get('inat_obs_block_map_count', '5'),
+      );
+    break;
+    case 'inat_obs_list':
+      $form['inat_obs_block_list_count'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Number of observations to display'),
+        '#description' => t('Enter a integer value from 1 to 200'),
+        '#default_value' => variable_get('inat_obs_block_list_count', '5'),
+      );
+    break;
+  }
+  return $form;
+}
+/** 
+ * Implements hook_block_save()
+ * http://drupalcode.org/project/examples.git/blob/HEAD:/block_example/block_example.module
+ */
+
+function inat_obs_block_save($delta = '', $edit = array()) {
+  switch($delta) {
+    case 'inat_obs_map':
+      variable_set('inat_obs_block_map_count',$edit['inat_obs_block_map_count']);
+    break;
+    case 'inat_obs_list':
+      variable_set('inat_obs_block_list_count',$edit['inat_obs_block_list_count']);
+    break;
+  }
+}
+/**
+ * Implements hook_block_view()
+ * https://api.drupal.org/api/drupal/modules%21block%21block.api.php/function/hook_block_view/7
+ */
+function inat_obs_block_view($delta = '') {
+  $block = array();
+  switch($delta) {
+    case 'inat_obs_map':
+      $project_limitation = '';
+      $user_limitation = '';
+      $project = variable_get('inat_base_project', '');
+      if($project != '') {
+        $project_limitation = '/project/'.$project;
+      }
+      $user = variable_get('inat_base_user', '');
+      if($user != '') {
+        $user_limitation = '/'.$user;
+      }
+      $verb = 'observations'.$project_limitation.$user_limitation.'.json';
+      $query = array('per_page' => variable_get('inat_obs_block_map_count','5'), 'order_by' => 'observed_on', 'page' => '1');
+      $options = array('query' => $query, 'https' => FALSE);
+      $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+      $options = array('method' => 'GET');
+      $result = drupal_http_request($url, $options);
+      $json = drupal_json_decode($result->data);
+      
+      $block['subject'] = t('Last iNaturalist Map');
+      $block['content'] = theme('inat_map', array('observations' => $json, 'context' => 'block'));
+    break;
+    case 'inat_obs_list':
+      $project_limitation = '';
+      $user_limitation = '';
+      $project = variable_get('inat_base_project', '');
+      if($project != '') {
+        $project_limitation = '/project/'.$project;
+      }
+      $user = variable_get('inat_base_user', '');
+      if($user != '') {
+        $user_limitation = '/'.$user;
+      }
+      $verb = 'observations'.$project_limitation.$user_limitation.'.json';
+      $query = array('per_page' => variable_get('inat_obs_block_list_count','5'), 'order_by' => 'observed_on', 'page' => '1');
+      $options = array('query' => $query, 'https' => FALSE);
+      $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+      $options = array('method' => 'GET');
+      $result = drupal_http_request($url, $options);
+      $json = drupal_json_decode($result->data);
+      
+      $block['subject'] = t('Last iNaturalist Observations');
+      $block['content'] = theme('inat_observations_general', array('observations' => $json, 'current_page' => '1'));
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_preprocess()
+ */
+function inat_obs_preprocess_inat_observations_general(&$var) {
+
+  foreach($var['observations'] as $id => $obs) {
+    $var['observations'][$id] = theme('inat_observation_list', array('observation' => $obs));
+  }
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/observations.css');
+
+
+}
+
+function inat_obs_preprocess_inat_projects_general(&$var){
+  foreach($var['projects'] as $id => $obs) {
+    $var['projects'][$id] = theme('inat_projects_list', array('projects' => $obs));
+  }
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/projects.css');
+
+}
+function inat_obs_preprocess_inat_observation_list(&$var) {
+  drupal_add_js('http://malsup.github.com/jquery.cycle2.js',array('type' => 'external', 'scope' => 'footer'));
+  drupal_add_js('http://malsup.github.io/jquery.cycle2.tile.js',array('type' => 'external', 'scope' => 'footer'));
+}
+function inat_obs_preprocess_inat_observation(&$var){
+  drupal_add_js('http://malsup.github.com/jquery.cycle2.js',array('type' => 'external', 'scope' => 'footer'));
+  drupal_add_js('http://malsup.github.io/jquery.cycle2.tile.js',array('type' => 'external', 'scope' => 'footer'));
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/observation.css');
+}
+function inat_obs_preprocess_inat_map(&$var){
+ drupal_add_css('http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css','external');
+ drupal_add_js("http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js",'external');
+}
+
+function inat_obs_preprocess_inat_place_list (&$var){
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/places_list.css');
+}
+
+function inat_obs_preprocess_inat_taxa (&$var){
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/taxa.css');
+}
+function inat_obs_preprocess_inat_taxa_list (&$var){
+  drupal_add_css(drupal_get_path('module', 'inat_obs') . '/css/taxa_list.css');
+}
+/**
+ * helper functions
+ */
+
+/**
+ * Willcard processors
+ */
+
+function project_id_load($id2) {
+
+  return $id2;
+}
+
+function obs_id_load($id) {
+  // TODO limit the allowed values
+  //if(is_int($id)) {
+    //return $id;
+  //} else {
+    //return '';
+  //}
+  return $id;
+}
+
+
+/**
+ * Hook menu page callbacks to call iNaturalist API
+ * http://www.slideshare.net/jkopel/pnwds-api
+ * http://www.inaturalist.org/pages/api+reference
+ */
+
+
+function inat_page_projects($featured = TRUE, $page = NULL) {
+  //Remove project list limitation because needs loggin
+  //$user = variable_get('inat_base_user', '');
+  //if($user != '') {
+    //$user_limitation = '/user/'.$user;
+  //}
+  //$verb = 'projects'.$user_limitation.'.json';
+  $verb = 'projects.json';
+  $query = array();
+  if($featured == 'featured') {
+    $query = array('featured' => 'true');
+  }
+  if(is_numeric($page)) {
+    $query += array('page' => $page);
+  }elseif (is_numeric($page)) {
+    $query += array('page' => $featured);
+  }
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json = drupal_json_decode($result->data);
+  //return var_export($json);
+  return  theme('inat_projects_general', array('projects' => $json));
+ 
+}
+
+function inat_projects($id) {
+  /** Get the project information **/
+  $verb = 'projects/'.$id.'.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_proj = drupal_json_decode($result->data);
+
+  /** Get observations for the project **/
+  $verb = 'observations/project/'.$id.'.json';
+  $query = array('per_page' => '40', 'order_by' => 'observed_on');
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_obs = drupal_json_decode($result->data);
+  
+  return  theme('inat_project', array('projects' => $json_proj)) . theme('inat_observations_general', array('observations' => $json_obs));;
+}
+
+function inat_page_observations($page) {
+  if($page == NULL) {
+    $page = 1;
+  }
+  $project_limitation = '';
+  $user_limitation = '';
+  $project = variable_get('inat_base_project', '');
+  if($project != '') {
+    $project_limitation = '/project/'.$project;
+  }
+  $user = variable_get('inat_base_user', '');
+  if($user != '') {
+    $user_limitation = '/'.$user;
+  }
+  $verb = 'observations'.$project_limitation.$user_limitation.'.json';
+  $query = array('per_page' => '40', 'order_by' => 'observed_on', 'page' => $page);
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json = drupal_json_decode($result->data);
+  
+  //return var_export($json);
+  return theme('inat_map', array('observations' => $json)) . theme('inat_observations_general', array('observations' => $json, 'current_page' => $page));
+}
+function inat_page_observation($id) {
+  $verb = 'observations/'.$id.'.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json = drupal_json_decode($result->data);
+
+  return theme('inat_observation', array('observation' => $json));
+}
+
+function inat_taxa($id, $page) {
+  /** Get the project information **/
+  $verb = 'taxa/'.$id.'.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_proj = drupal_json_decode($result->data);
+
+  /** Get observations for the project **/
+  if($page == '') {
+    $page = 1;
+  }
+  $verb = 'observations.json';
+  $query = array('per_page' => '40', 'order_by' => 'observed_on', 'taxon_id' => $id, 'page' => $page);
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_obs = drupal_json_decode($result->data);
+  
+  return  theme('inat_taxa', array('taxa' => $json_proj)) . theme('inat_observations_general', array('observations' => $json_obs, 'current_page' => $page, 'base_path' => 'taxa/'.$id));;
+}
+
+function inat_taxons() {
+  $verb = 'taxa.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json = drupal_json_decode($result->data);
+  
+  return theme('inat_taxa_list', array('taxons' => $json));
+}
+ 
+function inat_place($id) {
+  /** Get the project information **/
+  $verb = 'places/'.$id.'.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_proj = drupal_json_decode($result->data);
+
+  /** Get observations for the project **/
+  $verb = 'observations.json';
+  $query = array('per_page' => '40', 'order_by' => 'observed_on', 'place_guess' => $id);
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_obs = drupal_json_decode($result->data);
+  
+  return  theme('inat_place', array('place' => $json_proj)) . theme('inat_observations_general', array('observations' => $json_obs));;
+}
+
+function inat_places($page) {
+  print_r($page);
+  if($page == '') {
+    $page = 1;
+  }
+  $verb = 'places.json';
+  $query = array('page' => $page);
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json = drupal_json_decode($result->data);
+  
+  return theme('inat_place_list', array('places' => $json, 'current_page' => $page));
+}
+  
+function inat_user($id) {
+  /** Get the project information **/
+  $verb = 'users/'.$id.'.json';
+  $query = array();
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_proj = drupal_json_decode($result->data);
+
+  $login = $json_proj['login'];
+  /** Get observations for the project **/
+  $verb = 'observations/'.$login.'.json';
+  $query = array('per_page' => '40', 'order_by' => 'observed_on');
+  $options = array('query' => $query, 'https' => FALSE);
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org') . '/' . $verb, $options);
+  $options = array('method' => 'GET');
+  $result = drupal_http_request($url, $options);
+  $json_obs = drupal_json_decode($result->data);
+  
+  return  theme('inat_user', array('user' => $json_proj)) . theme('inat_observations_general', array('observations' => $json_obs));;
+}
+
+function inat_obs_obs_add() { 
+  $form['inat_obs_add_species_guess'] = array(
+    '#type' => 'textfield',
+    '#title' => t('What did you see?'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_taxon_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Taxon'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_id_please'] = array(
+    '#type' => 'radios',
+    '#options' => array(0 => t('No'), 1 => t('Yes')),
+    '#title' => t('ID Please?'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_observed_on_string'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Observed on'),
+    '#description' => t('YYYY-MM-DD, p.e. 2014-04-28'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_time_zone'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Time zone'),
+    '#required' => FALSE,
+    '#default_value' => drupal_get_user_timezone(),
+  );
+  $form['inat_obs_add_description'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Description'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_place_guess'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Place'),
+    '#required' => FALSE,
+  );
+  $form['inat_obs_add_latitude'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Latitude'),
+    '#required' => FALSE,
+    '#description' => t('Latitude of the observation. Presumed datum is WGS84.'),
+  );
+  $form['inat_obs_add_longitude'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Longitude'),
+    '#required' => FALSE,
+    '#description' => t('Longitide of the observation. Presumed datum is WGS84.'),
+  );
+  //$form['inat_obs_add_'] = array(
+    //'#type' => 'textfield',
+    //'#title' => t(''),
+    //'#required' => FALSE,
+  //);
+   $form['#validate'] = array('inat_obs_obs_add_validate');
+   $form['#submit'] = array('inat_obs_obs_add_submit');
+      
+   return system_settings_form($form);
+}
+function inat_obs_obs_add_validate($form, &$form_state) {
+}
+function inat_obs_obs_add_submit($form, &$form_state) {
+  $verb = 'observations.json';
+  $data = '?observation[species_guess]='.$form_state['values']['inat_obs_add_species_guess'].
+      '&observation[taxon_id]='.$form_state['values']['inat_obs_add_taxon_id'].
+      '&observation[id_please]='.$form_state['values']['inat_obs_add_id_please'].
+      '&observation[observed_on_string]='.$form_state['values']['inat_obs_add_observed_on_string'].
+      '&observation[time_zone]='.$form_state['values']['inat_obs_add_time_zone'].
+      '&observation[description]='.$form_state['values']['inat_obs_add_description'].
+      '&observation[place_guess]='.$form_state['values']['inat_obs_add_place_guess'].
+      '&observation[latitude]='.$form_state['values']['inat_obs_add_latitude'].
+      '&observation[longitude]='.$form_state['values']['inat_obs_add_longitude'];
+
+  $url = url(variable_get('inat_base_url','http://www.inaturalist.org').'/'.$verb.$data, array('https' => 'TRUE'));
+  $opt = array('method' => 'POST', 'data' => $data, 'headers' => array('Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => "Bearer ".$_SESSION['inat_access_token']));
+  $req = drupal_http_request($url, $opt);
+  $json = drupal_json_decode($req->data);
+  if($json != NULL && array_key_exists('errors',$json)) {
+    drupal_set_message(t('Unexpected error has been produced, iNaturalist message: ') . $json['errors'][0], 'error');
+  } else {
+    drupal_set_message(t('iNaturalist observation has been corectly created: ') . $json['id'], 'status');
+    drupal_goto('inat/observations');
+  }
+}

@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ * @return array
+ */
+function realia_blocks_menu() {
+  $items = array();
+  return $items;
+}
+
+function realia_blocks_realia_features() {
+  return array('realia_f_blocks' => array('weight' => 100));
+}
+/**
+ * Implements hook_block_info()
+ * @return array
+ */
+function realia_blocks_block_info() {
+  $blocks = array();
+
+  $blocks['realia-language'] = array(
+    'info' => t('Language switcher'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  $blocks['contact-webform'] = array(
+    'info' => t('Say hello!'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  $blocks['header-contact'] = array(
+    'info' => t('Header contact'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view()
+ * @param $delta
+ * @return array
+ */
+function realia_blocks_block_view($delta) {
+  $block = array();
+
+  switch ($delta) {
+    case 'realia-language':
+
+      if (drupal_multilingual()) {
+        $path = drupal_is_front_page() ? '<front>' : $_GET['q'];
+        $links = language_negotiation_get_switch_links('language', $path);
+
+        if (isset($links->links)) {
+          $variables = array(
+            'links' => $links->links,
+            'attributes' => array('class' => array('realia-language-switch'))
+          );
+          $block['content'] = theme('realia_language_switch', $variables);
+          $block['subject'] = t('Languages');
+        }
+      }
+      break;
+    case 'contact-webform':
+      $nid = variable_get('node_contact_webform', NULL);
+      if (!$nid) {
+        $content = t('Select valid webform');
+      }
+      else {
+        $node = node_load($nid);
+        $content = node_view($node, 'webform_block');
+      }
+
+      $block = array(
+        'title' => isset($node->title) ? $node->title : t('Contact'),
+        'content' => $content,
+      );
+      break;
+
+    case 'header-contact':
+      $block = array(
+        'title' => '<none>',
+        'content' => theme(
+          'realia_header_contact',
+          array(
+            'phone' => variable_get('header_contact_phone', FALSE),
+            'mail' => variable_get('header_contact_email', FALSE),
+          )
+        ),
+      );
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * @param $delta
+ * @return array
+ */
+function realia_blocks_block_configure($delta) {
+  $form = array();
+
+  switch ($delta) {
+    case 'contact-webform':
+      $options = db_select('node', 'n')
+        ->fields('n', array('nid', 'title'))
+        ->condition('type', 'webform')
+        ->execute()->fetchAllKeyed();
+
+
+      $form['node_contact_webform'] = array(
+        '#type' => 'select',
+        '#title' => t('Number of recent content items to display'),
+        '#default_value' => variable_get('node_contact_webform', NULL),
+        '#options' => $options,
+      );
+      break;
+    case 'header-contact':
+      $form['header_contact_email'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Email'),
+        '#default_value' => variable_get('header_contact_email', variable_get('site_mail')),
+      );
+
+      $form['header_contact_phone'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Phone number'),
+        '#default_value' => variable_get('header_contact_phone', NULL),
+      );
+      break;
+
+  }
+
+  return $form;
+}
+
+/**
+ * @param string $delta
+ * @param array $edit
+ */
+function realia_blocks_block_save($delta = '', $edit = array()) {
+  // This example comes from node.module.
+  switch ($delta) {
+    case 'contact-webform':
+      variable_set('node_contact_webform', $edit['node_contact_webform']);
+      break;
+    case 'header-contact':
+      variable_set('header_contact_phone', $edit['header_contact_phone']);
+      variable_set('header_contact_email', $edit['header_contact_email']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_entity_info_alter()
+ * @param $info
+ */
+function realia_blocks_entity_info_alter(&$info) {
+  $info['node']['view modes']['webform_block'] = array(
+    'label' => t('Webform block'),
+    'custom settings' => FALSE,
+  );
+}
+
+/**
+ * Implements hook_theme()
+ * @return array
+ */
+function realia_blocks_theme() {
+  return array(
+    'realia_language_switch' => array(
+      'template' => 'realia-language-switch',
+      'variables' => array('links' => array(), 'attributes' => array()),
+    ),
+    'realia_header_contact' => array(
+      'template' => 'realia-header-contact',
+      'variables' => array('phone' => FALSE, 'mail' => FALSE),
+    )
+  );
+}
+
+/**
+ *
+ */
+function template_preprocess_realia_language_switch(&$variables) {
+  global $language;
+  $links = & $variables['links'];
+
+  $variables['default_language'] = theme_links(
+    array(
+      'links' =>
+      array(
+        $language->language => $links[$language->language],
+      ),
+      'attributes' => array(),
+      'heading' => NULL,
+    )
+  );
+
+  unset($links[$language->language]);
+  $links = theme_links(array('links' => $links, 'attributes' => array(), 'heading' => NULL));
+}

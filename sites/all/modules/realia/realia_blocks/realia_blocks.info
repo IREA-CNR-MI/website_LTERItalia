@@ -1,0 +1,4 @@
+name = Realia Blocks
+description = Provides various blocks used accross site
+core = 7.x
+package = Realia

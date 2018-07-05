@@ -1,0 +1,4 @@
+name = Realia Gallery
+description = Provides content type definition for Realia Gallery
+core = 7.x
+package = Realia

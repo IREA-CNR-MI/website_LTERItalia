@@ -1,0 +1,75 @@
+.call-to-action { margin: 30px 0px; text-align: center;
+
+
+  .cta-icons {
+    @include border-radius(50%); @include transition(border-color .2s ease-in, background-color .2s ease-in);
+    list-style: none; background-color: $gray-lighter; background-position: center bottom; background-repeat: no-repeat;  border: 6px solid $gray-lighter; height: 130px; margin: 0px auto 30px auto; width: 130px; font-size: 95px; overflow: hidden;
+    &:hover { background-color: $blue-dark; border-color: $blue;
+      ul {
+        margin-top: -4px;
+
+      }
+    }
+
+    .icon {
+      width: auto !important; height: auto !important; padding: 0px; margin: 0px; vertical-align: auto; background-position: center; background-image: none; line-height: 140px !important;
+    }
+
+    ul {
+      @include transition(margin .2s ease-in);
+      margin: 0px;
+      margin-top: -145px;
+      .cta-colored {
+        color: $gray;
+      }
+      .cta-white {
+
+        color: #ffffff;
+      }
+    }
+
+
+  }
+
+  .decoration { 
+    @include border-radius(50%); @include transition(background-position .2s ease-in, border-color .2s ease-in, background-color .2s ease-in);
+    background-color: $gray-lighter; background-position: center bottom; background-repeat: no-repeat;  border: 6px solid $gray-lighter; height: 130px; margin: 0px auto 30px auto; width: 130px; 
+  }
+  .address {        
+      background-image: url('../img/call-to-action-address.png'); background-size: 53px 260px;
+      @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+        background-image: url('../img/call-to-action-address@2x.png');
+      }
+  }
+
+  .gps {
+    background-color: $gray-lighter; background-image: url('../img/call-to-action-gps.png'); background-size: 77px 260px;
+    @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+      background-image: url('../img/call-to-action-gps@2x.png');
+    }
+  }
+
+  .key {
+    background-color: $gray-lighter; background-image: url('../img/call-to-action-key.png'); background-size: 77px 260px;
+    @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+      background-image: url('../img/call-to-action-key@2x.png');
+    }
+  }
+
+  h2 { color: $blue-dark; font-size: 30px; font-weight: lighter; margin: 0px 0px 20px 0px;
+    a { color: $blue-dark; text-decoration: none; 
+      &:hover { text-decoration: none; }
+    }
+  }
+  p { color: $gray; margin: 0px 0px 30px 0px; }
+  &:hover { 
+    .key, .gps, .address { background-color: $blue-dark; background-position: center top; border-color: $blue; }
+  }
+}
+
+
+.triptych-wrapper { background-color: #ffffff; padding: 50px 20px; }
+
+@media (max-width: 767px) {
+  .call-to-action { margin-bottom: 30px; }
+}

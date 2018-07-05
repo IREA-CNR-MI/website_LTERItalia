@@ -1,0 +1,4 @@
+name = Realia Feature
+description = Provides content type definition for Realia Feature
+core = 7.x
+package = Realia

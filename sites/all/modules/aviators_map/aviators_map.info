@@ -1,0 +1,10 @@
+name = Aviators map
+description = Aviators google map integration
+core = 7.x
+package = Aviators
+
+dependencies[] = gmap3_tools
+dependencies[] = google_map_field
+
+files[] = aviators_map.views.inc
+files[] = aviators_map_plugins_style_grid.inc

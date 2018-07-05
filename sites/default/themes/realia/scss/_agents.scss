@@ -1,0 +1,82 @@
+.agents-block, #block-views-agent-block { margin-bottom: 20px;
+  .views-row { @include shadow; background-color: #ffffff; margin-bottom: 15px; padding: 14px 10px 15px 10px;
+    .views-field-field-photo { float: left; margin-right: 20px; width: 50px;
+      img { width: 50px; }
+    }
+    .views-field-title { margin-bottom: 8px;
+      a { color: $black; font-size: 14px;
+        &:hover { text-decoration: none; }
+      }
+    }
+    .views-field-field-email, .views-field-field-phone { font-size: 12px;
+      .views-label { font-weight: bold; }
+      .field-content { display: inline-block; }
+    }
+
+    &:last-child { margin-bottom: 0px; }
+  }
+}
+
+@media (min-width: 1200px)  {
+  .agents-block, #block-views-agent-block {
+    .views-row { padding: 20px 20px;
+      .views-field-field-photo { width: 70px;
+        img { width: 70px; }
+      }
+      .views-field-title {
+        a { font-size: 16px; }
+      }
+      .views-field-field-phone { font-size: 13px;}
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .agents-block, #block-views-agent-block {
+    .views-row { padding: 10px;
+      .views-field-field-photo { margin: 0px; text-align: center; width: 100%;
+        img { width: 70px; }
+      }
+
+      .views-field-field-photo { float: none; margin: 0px 0px 10px 0px; text-align: center; }
+      .views-field-title { margin: 0px; text-align: center;
+        a { font-size: 18px; }
+      }
+      .views-field-field-email,
+      .views-field-field-phone { text-align: center; }
+    }
+  }
+}
+
+.view-display-id-page_1 {
+  .views-row { border-bottom: 1px solid #ffffff; margin-bottom: 20px; padding-bottom: 20px;
+    h3 { font-size: 24px; line-height: 36px; margin: 0px 0px 10px 0px; }
+    .box { @include shadow;; background-color: #ffffff; padding: 13px;
+      .office { background-image: url('../img/icons/phone-gray.png'); background-position: left center; background-repeat: no-repeat; background-size: 20px 20px; line-height: 26px; margin-bottom: 5px; padding-left: 30px;
+        @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+          background-image: url('../img/icons/phone-gray@2x.png');
+        }
+      }
+      .phone { background-image: url('../img/icons/cell-phone-gray.png'); background-position: 4px center; background-repeat: no-repeat; background-size: 12px 20px; line-height: 26px; margin-bottom: 5px; padding-left: 30px;
+        @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+          background-image: url('../img/icons/cell-phone-gray@2x.png');
+        }
+      }
+      .email { background-image: url('../img/icons/mail-gray.png'); background-position: 1px center; background-repeat: no-repeat; background-size: 17px 11px; line-height: 26px; padding-left: 30px;
+        @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+          background-image: url('../img/icons/mail-gray@2x.png');
+        }
+      }
+    }
+    &:last-child { border-bottom: 0px; }
+  }
+}
+
+@media (max-width: 767px) {
+  .view-display-id-page_1 { margin-left: 20px; margin-right: 20px;
+    .views-row {
+      .span2 { text-align: center; }
+      h3 { text-align: center; }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+figure.photo {
+  float: left;
+  display: table;
+  img {
+    height: 250px;
+  }
+  figurecaption {
+    display: table-caption;
+    caption-side: bottom;
+    font-size: 70%;
+  }
+}
+
+
+.inat_observation {
+  #map {
+    width: 250px;
+    height: 250px;
+  }
+  h2 {
+    clear: both;
+  }
+}
+
+.inat_observation_single {  
+  background-color: rgba(246, 246, 246, 0.8);
+  margin-top: 0px;  
+  border: 1px solid rgb(221, 221, 221);
+  margin-bottom: 15px;
+  padding-left: 5px;
+  display:block;
+  h2 {
+    clear: both;
+  } 
+ .photo_single {
+   display: inline-block;
+   margin: 15px;
+   vertical-align: top;
+   width: 300px;
+   figurecaption {    
+     display: block;
+   }
+ }
+ .localitzation {
+  
+  border-right: 1px solid rgb(221, 221, 221);
+  display: inline-block;
+  width: 327px;
+  padding: 10px;
+  border-left: 1px solid;
+  #map {
+    width: 250px;
+    height: 281px; 
+    
+  }
+   .label {
+      font-style: italic;
+   }
+ }
+}
+
+ 

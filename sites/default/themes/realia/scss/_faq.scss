@@ -1,0 +1,29 @@
+.faq-content {
+  .faq {
+    .faq-question-answer { border-bottom: 1px solid #FFFFFF; padding: 15px 0px;
+      .faq-question {  color: $black; cursor: pointer; font-size: 18px; padding: 5px 0px 5px 0px;
+        .marker { background-color: $black; background-image: url('../img/icons/faq-plus.png'); background-position: center center; background-repeat: no-repeat; background-size: 8px 8px; display: inline-block; height: 26px; margin-right: 25px; vertical-align: -6px; width: 26px;
+          @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+            background-image: url('../img/icons/faq-plus@2x.png');
+          }
+        }
+        a { color: $black; text-decoration: none; }
+        &.faq-qa-visible {
+          .marker { background-color: $blue; background-image: url('../img/icons/faq-minus.png'); background-size: 8px 2px;
+            @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+              background-image: url('../img/icons/faq-minus@2x.png');
+            }
+          }
+        }
+        &:hover {
+          .marker { background-color: $blue; }
+        }
+      }
+      .faq-answer { margin-top: 20px; padding: 0px; }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .faq-content { margin-left: 20px; margin-right: 20px; }
+}

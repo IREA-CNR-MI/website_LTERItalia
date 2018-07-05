@@ -1,0 +1,4 @@
+name = Realia Agent
+description = Provides content type definition for Realia Agent
+core = 7.x
+package = Realia

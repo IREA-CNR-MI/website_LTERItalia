@@ -1,0 +1,55 @@
+v1.2.1 – September 18th, 2013
+- FIX - Map lot/lan centering
+- FIX - Amenities list of checkboxes - multilingual display fix
+- FIX - Images saving with references to property
+
+v1.2.0 – September 5th, 2013
+- Map lat/lon selection now done trough google_map_field
+- Added advanced map integration for views
+    - Clustering
+    - Map icons
+    - Controls positioning
+- Added files directory to package
+
+Backward compatibility:
+    1. Enable google_map_field and aviators_map modules
+    2. Run update.php
+    3. New view Apartment map V2 is created
+    4. Navigate to structure -> blocks and enable the Map block V2 instead of old map block. ( If you want to use new module )
+
+After updating you wont have to use the new map system. The old one will be still working. Using new module is completely optional.
+
+
+July 30.
+- Updated modules
+- Adding option prefix/suffix for filter currency ( Can be found in theme settings )
+- Adding Russian currency
+- Removing 404 caused by loading css from GoogleFonts
+- Removing strict warnings from Aviators palette module
+- Removing notices - Notice: Undefined index: heading in theme_links()
+- Google visual maps - Updated maps rendering
+- Removing gmap3_tools module from update
+- PictoPro icon set included. Adding Aviators PictoPro module for UI icon selection.
+      Manual update for backward compatibility needed!
+      1. Enable module Aviators PictoPro
+      2. Navigate to admin/structure/types/manage/call-to-action/fields
+      3. Create a new field with Machine Name 'field_pictopro', field type 'PictoPro', widget 'PictoPro'
+      4. Navigate admin/structure/types/manage/call-to-action/display/cta
+      5. Enable PictoPro field for display && hide the field label
+      6. Enjoy!
+
+September 5.
+- Map lat/lon selection now done trough google_map_field
+- Added advanced map integration for views
+    - Clustering
+    - Map icons
+    - Controls positioning
+- Added files directory to package
+
+Backward compatibility:
+    1. Enable google_map_field and aviators_map modules
+    2. Run update.php
+    3. New view Apartment map V2 is created
+    4. Navigate to structure -> blocks and enable the Map block V2 instead of old map block. ( If you want to use new module )
+
+After updating you wont have to use the new map system. The old one will be still working. Using new module is completely optional.

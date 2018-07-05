@@ -1,0 +1,4 @@
+name = Realia Property
+description = Provides content type definition for Realia Property
+core = 7.x
+package = Realia

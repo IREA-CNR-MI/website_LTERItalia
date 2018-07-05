@@ -1,0 +1,196 @@
+<?php
+
+require_once 'realia_utils.field.inc';
+require_once 'realia_utils.inc';
+
+/**
+ * Implements hook_views_api().
+ */
+function realia_utils_views_api() {
+  return array(
+    'api' => 3.0,
+  );
+}
+
+/**
+ * Implements hook_realia_features
+ * @return array
+ */
+function realia_utils_realia_features() {
+  return array('realia_f_partner' => array('weight' => 15), 'realia_f_pages' => array('weight' => 15), 'realia_f_mediabox' => array('weight' => 2));
+}
+
+/**
+ * @return array
+ */
+function realia_utils_theme() {
+  return array(
+    'realia_view_grid' => array(
+      'variables' => array('form' => NULL),
+    ),
+    'realia_view_gmap' => array(
+      'variables' => array('form' => NULL),
+    ),
+    'realia_taxonomy_formatter' => array(
+      'variables' => array('terms' => array(), 'settings' => array()),
+      'template' => 'realia-taxonomy-formatter',
+    )
+  );
+}
+
+/**
+ * @param $variables
+ */
+function template_preprocess_realia_taxonomy_formatter(&$variables) {
+  $terms = $variables['terms'];
+
+  foreach ($terms as &$term) {
+    $term['attributes'] = array('class' => array());
+
+    if ($term['checked']) {
+      $term['attributes']['class'][] = 'checked';
+    }
+    else {
+      $term['attributes']['class'][] = 'plain';
+    }
+  }
+
+  $settings = $variables['settings'];
+
+  $variables['chunk_attributes'] = array(
+    'class' => array(
+      $settings['column_wrapper'],
+    ),
+  );
+
+  $variables['formatter_attributes'] = array(
+    'class' => array(
+      $settings['width'],
+    )
+  );
+
+  // i like them big, i like them chunky...
+  $variables['chunks'] = array_chunk($terms, ceil(count($terms) / $settings['columns']));
+
+}
+
+/**
+ * @param $variables
+ */
+function template_preprocess_realia_view_grid(&$variables) {
+  $view = $variables['view'];
+
+  $records = $variables['rows'];
+  $options = $variables['options'];
+
+  $variables['view_attributes'] = array(
+    'class' => array('span' . $options['view-columns']),
+  );
+
+  $rows = array();
+  $row = 0;
+  foreach ($records as $delta => $record) {
+
+    $attributes = array(
+      'class' => array('item', 'span' . $options['record-columns']),
+    );
+
+    $rows[$row][$delta]['record'] = $record;
+    $rows[$row][$delta]['attributes'] = $attributes;
+
+    // end of the row
+    if (($delta + 1) % $options['row-records'] == 0) {
+      $row++;
+    }
+  }
+
+  $variables['rows'] = $rows;
+}
+
+
+/**
+ * Preprocess function form views - gmap style plugin
+ * @param $variables
+ */
+function template_preprocess_realia_view_gmap(&$variables) {
+  module_load_include('inc', 'gmap3_tools');
+
+  // @todo - Predefined styles
+  // @todo - Predefined installation multi-step profiles
+  // @todo - Separate to own module
+  // @todo - Testing
+  // @todo - Icon integration - We should be able to preselect style of image ( Duplicate entity display settings into views )
+
+  // Map markers
+  $markers = array();
+  $view = $variables['view'];
+  $result = $variables['rows'];
+  $rows = $variables['rows'];
+
+  // settings
+  $options = $view->style_plugin->options;
+  // style handler
+  $handler = $view->style_plugin;
+
+  // rendered fields for each result row - we are getting higher level of granularity here
+  $field_renders = $handler->render_fields($result);
+
+  // @todo - these should be forced into drupal_variables array
+  $variables['width'] = $options['width'];
+  $variables['height'] = $options['height'];
+
+  foreach ($field_renders as $delta => $field_render) {
+    // strip tags and get raw values
+    // @todo this works with text fields, but no idea what will happen with non-standard field type
+    // @todo - values should be probably selected according to field_schema and field_handler - raw from db (performance overhead?)
+    $latitude = strip_tags($field_render[$options['latitude-field']]);
+    $longitude = strip_tags($field_render[$options['longitude-field']]);
+
+    if (!empty($latitude) && !empty($longitude)) {
+
+    // Create a DOM object from a string
+//      $html = str_get_html($field_render[$options['image-field']]);
+//      $elements = $html->find('img');
+//      if(count($elements)) {
+//        $attributes['icon'] = reset($elements)->src;
+//      }
+      global $base_url;
+      $attributes['icon'] = $base_url . '/' . drupal_get_path('theme', 'realia') . '/img/markers/marker-transparent.png';
+    }
+
+    // create marker as we have data about position, icon, and 'content' of marker (rendered row)
+    $markers[$delta] = gmap3_tools_create_marker($latitude, $longitude, NULL, $rows[$delta], $attributes);
+  }
+
+  // unique identifier
+  $variables['view_id'] = 'gmap-' . str_replace('_', '-', $view->name);
+
+  // generate map settings
+  gmap3_tools_add_map(
+    array(
+      'mapId' => $variables['view_id'],
+      'mapOptions' => array(
+        'centerX' => $options['latitude'],
+        'centerY' => $options['longitude'],
+        'zoom' => (int) $options['zoom'],
+        'mapTypeId' => GMAP3_TOOLS_MAP_TYPE_ID_ROADMAP,
+        'panControl' => TRUE,
+        'rotateControl' => FALSE,
+        'scaleControl' => FALSE,
+        'streetViewControl' => TRUE,
+        'zoomControl' => TRUE,
+        'scrollwheel' => FALSE,
+      ),
+      'gmap3ToolsOptions' => array(
+        // Close current opened infoWindow when opening new one.
+        'closeCurrentInfoWindow' => TRUE,
+        // Default position and zoom level of markers on map.
+        'defaultMarkersPosition' => $options['default-position'],
+      ),
+      'markers' => $markers,
+    )
+  );
+
+  drupal_add_js(drupal_get_path('module', 'realia_utils') . '/infobox.js');
+  drupal_add_js(drupal_get_path('module', 'realia_utils') . '/styledMarker.js');
+}

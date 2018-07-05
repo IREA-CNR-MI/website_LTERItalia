@@ -1,0 +1,17 @@
+; Module developed by Projecte Ictineo (www.projecteictineo.com)
+; Copyright 2014 Projecte Ictineo under aGPLv3
+
+name = iNaturalist login
+description = iNaturalist login plugin and user stats
+package = iNaturalist
+version = 0.1
+core = 7.x
+files[] = 
+dependencies[] = inat_base
+
+
+; Information added by drupal.org packaging script on 2011-12-05
+version = "7.10"
+project = "drupal"
+datestamp = "1323125439"
+

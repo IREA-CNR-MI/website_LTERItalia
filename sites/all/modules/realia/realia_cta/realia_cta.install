@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_schema()
+ * @return mixed
+ */
+function realia_cta_schema() {
+
+  $schema['realia_cta_class'] = array(
+    'description' => 'Realia call to action class',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'class' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Create table for adding classes to call to action
+ */
+function realia_cta_update_7001() {
+  $schema = realia_cta_schema();
+  if(!db_table_exists('realia_cta_class')) {
+    db_create_table('realia_cta_class', $schema['realia_cta_class']);
+  }
+}

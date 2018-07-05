@@ -1,0 +1,17 @@
+<?php
+
+function aviators_pictopro_field_schema($field) {
+  if ($field['type'] == 'pictopro') {
+    $columns = array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ),
+    );
+
+    return array(
+      'columns' => $columns,
+    );
+  }
+}

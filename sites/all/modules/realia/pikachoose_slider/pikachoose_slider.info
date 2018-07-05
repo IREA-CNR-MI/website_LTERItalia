@@ -1,0 +1,7 @@
+name = Pikachoose slider
+description = Pikachoose slider - views implementation
+core = 7.x
+package = Realia
+
+files[] = pikachoose_slider.views.inc
+files[] = pikachoose_slider_plugin_slider.inc

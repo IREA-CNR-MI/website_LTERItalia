@@ -1,0 +1,26 @@
+iNaturalist integration for Drupal 7 
+Developed by Projecte Ictineo SCCL (http://projecteictineo.com)
+
+INSTALLATION
+============
+
+Install this plugin as a normal Drupal 7 plugin:
+1- Download it
+2- copy it to /sites/all/modules
+3- Enable it
+4- Enjoy!
+
+CONFIGURATION
+=============
+iNaturalist plugin has own configuration page, into:
+ "Configuration" > "iNaturalist" > "iNaturalist configurations"
+ [/admin/config/inaturalist/config]
+
+you can setup the base inaturalist url, for the main inaturalist.org site it must be:
+http://www.inaturalist.org
+
+you can also set another inaturalist instalation to get and retrieve the data.
+
+OPTIONAL
+========
+if jquery_update is loading jquery v1.10 the module have multiple images for observations carousel display

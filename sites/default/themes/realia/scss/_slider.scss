@@ -1,0 +1,51 @@
+.view-frontpage-slider { margin-top: 0px; position: relative; overflow: hidden;
+	.views-field-mediabox-image { 
+		img { height: 429px; width: 100%; }
+	}
+	.slider-info { background-color: $blue-dark; bottom: 10px; left: 10px; opacity: .9; padding: 10px; position: absolute; width: 280px;
+		h2 { line-height: 1; margin: 0px 0px 10px 0px; padding: 0px; 
+			a { color: $blue; text-decoration: none; }
+		}
+		h3 { color: #ffffff; font-size: 14px; line-height: 1; margin: 0px 0px 10px 0px; }
+
+		.price { background-image: url('../img/footer-border.png'); background-position: left bottom; background-repeat: repeat-x; background-size: 268px 1px; margin-bottom: 10px; overflow: hidden; padding: 5px 0px 15px 0px;
+			@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+				background-image: url('../img/footer-border@2x.png');
+			}
+			h2 { color: #ffffff; float: left; font-size: 24px; line-height: 1; margin: 0px; padding: 0px; }
+			a { background-image: url('../img/arrow-right-white.png'); background-position: right center; background-repeat: no-repeat; background-size: 8px 11px; color: #ffffff; display: block; float: right; margin-top: 3px; padding-right: 20px; 
+				@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+					background-image: url('../img/arrow-right-white@2x.png');
+				}
+			}
+		}		
+		.bathrooms { background-image: url('../img/icons/bathrooms-white.png'); background-position: left center; background-repeat: no-repeat; background-size: 14px 20px; color: #ffffff; font-weight: bold; float: left; margin-right: 30px; padding-left: 25px; 
+			@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+				background-image: url('../img/icons/bathrooms-white@2x.png');
+			}
+		}
+		.bedrooms { background-image: url('../img/icons/bedrooms-white.png'); background-position: left center; background-repeat: no-repeat; background-size: 21px 12px; color: #ffffff; font-weight: bold; float: left; padding-left: 35px; 
+			@media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+				background-image: url('../img/icons/bedrooms-white@2x.png');
+			}
+		}
+	}
+	.views-slideshow-controls-bottom { bottom: 8px;  position: absolute; right: 10px; 
+		.views-slideshow-pager-field-item { vertical-align: top;
+            .views-field-field-location, .views-content-field-location { height: 10px; line-height: 10px; }
+			@include background-clip(content-box); @include border-radius(50%); background-color: #ffffff; border: 2px solid rgba(0, 0, 0, .15); color: transparent; cursor: pointer; display: inline-block; height: 10px; margin-left: 6px; position: relative; width: 10px; z-index: 100;
+			&.active { background-color: $blue-dark; }
+		}
+	}
+}
+
+#highlighted { margin-top: 30px;
+  .block-filter { margin-top: 0px !important;  }
+}
+
+@media (max-width: 767px) {
+  #highlighted {
+    .block-filter { margin-top: 30px !important; margin-left: 20px; margin-right: 20px; }
+  }
+  .view-frontpage-slider { display: none; margin-left: 20px; margin-right: 20px; }
+}

@@ -1,0 +1,36 @@
+
+.inat_taxa.row {
+    background-color: rgb(246, 246, 242);
+    border: 1px solid rgb(230, 230, 230);
+    display: inline-block;
+    height: 350px;
+    padding: 10px;
+    vertical-align: top;
+    width: 320px;
+    .photo {
+    display: inline;
+    margin-left: 100px;
+   }
+
+}
+.inat_project.row {
+   border: 1px solid rgb(226, 226, 226); 
+   padding-bottom:10px;
+   .photo {
+     float:right;
+     margin-top: 35px;
+     padding: 20px;
+   }
+   h2 {
+     padding-left: 0px;
+   }
+   .description {
+     padding-left: 10px;
+     padding-bottom: 10px;
+   }
+  a {
+   padding-left:10px;
+  }
+}
+
+

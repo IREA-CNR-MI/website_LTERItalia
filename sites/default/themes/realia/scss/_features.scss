@@ -1,0 +1,24 @@
+#block-views-features-features {
+	.span4 { margin-bottom: 30px;
+		.views-field-field-icon {
+			img { width: 80%; }
+		}
+		.views-field-body {
+			h3 { color: $black; font-size: 18px; font-weight: normal; line-height: 22px; margin-top: 0px; margin-bottom: 20px; }
+			p { }
+		}
+	}
+}
+
+@media (max-width: 767px) {
+  #block-views-features-features { padding-left: 20px; padding-right: 20px;
+    .span4 {
+      .views-field-field-icon { margin-bottom: 30px; text-align: center;
+        img { width: 100px; }
+      }
+      .views-field-body {
+        h3 { text-align: center; }
+      }
+    }
+  }
+}
