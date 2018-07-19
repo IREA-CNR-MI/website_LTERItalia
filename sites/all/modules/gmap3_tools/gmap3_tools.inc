@@ -119,7 +119,7 @@ function gmap3_tools_add_map($options) {
     // Visit https://code.google.com/apis/console and generate new api key if
     // you need it.
     $lib_url = 'http://maps.googleapis.com/maps/api/js?&sensor=false';
-    if ($api_key = variable_get('gmap3_tools_api_key', NULL)) {
+    if ($api_key = variable_get('google_map_field_apikey', NULL)) {
       $lib_url .= '&key=' . $api_key;
     }
     drupal_add_js($lib_url, 'external', array('scope' => 'footer'));
@@ -159,7 +159,7 @@ function gmap3_tools_create_marker($lat, $lng, $title = NULL, $content = NULL, $
   }
   $marker['markerOptions'] = $marker_options;
 
-  
+
   return $marker;
 }
 
