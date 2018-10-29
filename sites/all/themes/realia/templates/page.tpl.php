@@ -5,7 +5,7 @@
         <div class="breadcrumb-wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="span12">
+                    <div class="col-md-12">
                         <?php print $breadcrumb; ?>
                     </div>
                 </div><!-- /.row -->
@@ -17,11 +17,19 @@
         <div id="header">
             <div id="header-inner">
                 <div class="container">
-                    <div class="navbar">
+                    <div class="navbar-nav">
                         <div class="navbar-inner">
                             <div class="row">
-                                <div class="span4">
-                                    <a href="#nav" class="hidden-desktop" id="btn-nav"><?php print t('Toggle navigation'); ?></a>
+                                <div class="col-md-4">
+                                    <!-- <a href="#nav" class="hidden-desktop" id="btn-nav"><?php //print t('Toggle navigation'); ?></a> -->
+
+                                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                      <span class="sr-only">Toggle navigation</span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                    </button>
 
                                     <?php if ($logo): ?>
                                         <div class="logo">
@@ -33,7 +41,7 @@
 
                                     <?php if ($site_name): ?>
                                         <div class="site-name">
-                                            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" class="brand">
+                                            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" class="navbar-brand">
                                                 <?php print $site_name; ?>
                                             </a>
                                         </div><!-- /.site-name -->
@@ -47,13 +55,13 @@
                                 </div>
 
                                 <?php if (!empty($page['header_right'])): ?>
-                                    <div class="span3 pull-right">
+                                    <div class="col-md-3 pull-right">
                                         <?php print render($page['header_right']); ?>
                                     </div>
                                 <?php endif; ?>
 
                                 <?php if (!empty($page['header_middle'])): ?>
-                                    <div class="span5">
+                                    <div class="col-md-5">
                                         <?php print render($page['header_middle']); ?>
                                     </div>
                                 <?php endif; ?>
@@ -62,7 +70,7 @@
                         </div>
                         <!-- /.navbar-inner -->
                     </div>
-                    <!-- /.navbar -->
+                    <!-- /.navbar-nav -->
                 </div>
                 <!-- /.container -->
             </div>
@@ -75,11 +83,12 @@
     <div id="navigation">
         <div class="container">
             <?php if (!empty($page['navigation'])): ?>
-            <div class="navigation-wrapper">
-                <div class="navigation clearfix">
+            <!-- <div class="navigation-wrapper"> -->
+                <!-- <div class="navigation clearfix"> -->
+                <div class="navbar-collapse collapse">
+                  <nav role="navigation">
                     <?php print render($page['navigation']); ?>
-                </div>
-                <!-- /.navigation -->
+                </div><!-- /.navigation -->
             </div><!-- /.navigation-wrapper -->
             <?php endif; ?>
         </div>
@@ -87,7 +96,7 @@
     <div id="map">
         <div class="container" style="position: relative;">
             <div class="row">
-                <div class="span3">
+                <div class="col-md-12">
                     <?php if ($page['map_sidebar']): ?>
                     <?php print render($page['map_sidebar']); ?>
                     <?php endif; ?>
@@ -103,28 +112,28 @@
         <div class="container">
             <?php if ($page['highlighted']): ?>
                 <div class="row" id="highlighted">
-                    <div class="span9">
+                    <div class="col-md-9">
                         <?php if ($page['highlighted']): ?>
                         <div class="highlighted"><?php print render($page['highlighted']); ?></div>
                         <?php endif; ?>
                     </div>
 
-                    <div class="span3">
+                    <div class="col-md-3">
                         <?php if ($page['highlighted_sidebar']): ?>
                         <?php print render($page['highlighted_sidebar']); ?>
                         <?php endif; ?>
                     </div>
-                </div><!-- /#highlighted -->                
+                </div><!-- /#highlighted -->
             <?php endif; ?>
 
             <div class="row">
                 <?php if ($page['sidebar_first']): ?>
-                <div class="sidebar span3" role="complementary">
+                <div class="sidebar col-md-3" role="complementary">
                     <?php print render($page['sidebar_first']); ?>
                 </div> <!-- /.sidebar -->
                 <?php endif; ?>
 
-                <section class="<?php print _bootstrap_content_span($columns); ?>">
+                <section class="<?php print _bootstrap_content_span(2); //print _bootstrap_content_span($columns); ?>">
 
                     <a id="main-content"></a>
                     <?php print render($title_prefix); ?>
@@ -148,14 +157,14 @@
                 </section>
 
                 <?php if ($page['sidebar_second']): ?>
-                <aside class="span3" role="complementary">
+                <aside class="col-md-3" role="complementary">
                     <?php print render($page['sidebar_second']); ?>
                 </aside>  <!-- /#sidebar-second -->
                 <?php endif; ?>
             </div>
             <div class="row" id="carousel">
                 <?php if ($page['carousel']): ?>
-                <div class="sidebar span12" role="complementary">
+                <div class="sidebar col-md-12" role="complementary">
                     <?php print render($page['carousel']); ?>
                 </div> <!-- /.sidebar -->
                 <?php endif; ?>
@@ -163,7 +172,7 @@
 
             <?php if ($page['bottom']): ?>
             <div class="row" id="bottom">
-                <div class="span12">
+                <div class="col-md-12">
                     <?php print render($page['bottom']); ?>
                 </div>
             </div>
@@ -195,27 +204,27 @@
         <div id="footer-top-inner" class="container">
             <div class="row">
                 <?php if ($page['bottom_quadruple_first']): ?>
-                <div class="span3" role="complementary">
+                <div class="col-md-3" role="complementary">
                     <?php print render($page['bottom_quadruple_first']); ?>
-                </div><!-- /.span3 -->
+                </div><!-- /.col-md-3 -->
                 <?php endif; ?>
 
                 <?php if ($page['bottom_quadruple_second']): ?>
-                <div class="sidebar span3" role="complementary">
+                <div class="sidebar col-md-3" role="complementary">
                     <?php print render($page['bottom_quadruple_second']); ?>
-                </div><!-- /.span3 -->
+                </div><!-- /.col-md-3 -->
                 <?php endif; ?>
 
                 <?php if ($page['bottom_quadruple_third']): ?>
-                <div class="span3" role="complementary">
+                <div class="col-md-3" role="complementary">
                     <?php print render($page['bottom_quadruple_third']); ?>
-                </div><!-- /.span3 -->
+                </div><!-- /.col-md-3 -->
                 <?php endif; ?>
 
                 <?php if ($page['bottom_quadruple_last']): ?>
-                <div class="span3" role="complementary">
+                <div class="col-md-3" role="complementary">
                     <?php print render($page['bottom_quadruple_last']); ?>
-                </div><!-- /.span3 -->
+                </div><!-- /.col-md-3 -->
                 <?php endif; ?>
             </div>
         </div>
@@ -226,15 +235,15 @@
     <div id="footer" class="footer container">
         <div id="footer-inner">
             <div class="row">
-                <div class="span6 copyright">
+                <div class="col-md-6 copyright">
                     <?php print render($page['footer']); ?>
                 </div>
-                <!-- /.span6 -->
+                <!-- /.col-md-6 -->
 
-                <div class="span6 share">
+                <div class="col-md-6 share">
                     <?php print render($page['footer_secondary']); ?>
                 </div>
-                <!-- /.span6 -->
+                <!-- /.col-md-6 -->
             </div>
         </div>
         <!-- /#footer-inner -->

@@ -84,7 +84,7 @@ function template_preprocess_realia_view_grid(&$variables) {
   $options = $variables['options'];
 
   $variables['view_attributes'] = array(
-    'class' => array('span' . $options['view-columns']),
+    'class' => array('col-md-' . $options['view-columns']),
   );
 
   $rows = array();
@@ -92,7 +92,7 @@ function template_preprocess_realia_view_grid(&$variables) {
   foreach ($records as $delta => $record) {
 
     $attributes = array(
-      'class' => array('item', 'span' . $options['record-columns']),
+      'class' => array('item', 'col-md-' . $options['record-columns']),
     );
 
     $rows[$row][$delta]['record'] = $record;

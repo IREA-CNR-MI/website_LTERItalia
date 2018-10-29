@@ -258,24 +258,24 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     background-color: rgba(255, 255, 255, 0.5)
 }
 
-.navigation-wrapper .navigation .block-superfish {
+.navbar-collapse nav .block-superfish {
     float: left
 }
 
-.navigation-wrapper .navigation .block-superfish .content {
+.navbar-collapse nav .block-superfish .content {
     float: left
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul {
+.navbar-collapse nav .block-superfish .content ul {
     margin: 0px
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li {
+.navbar-collapse nav .block-superfish .content ul li {
     background-color: transparent;
     float: left
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li .nolink, .navigation-wrapper .navigation .block-superfish .content ul li a {
+.navbar-collapse nav .block-superfish .content ul li .nolink, .navbar-collapse nav .block-superfish .content ul li a {
     background-color: transparent;
     border-left: 0px;
     border-top: 2px solid transparent;
@@ -290,18 +290,18 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     white-space: nowrap
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li .nolink:hover, .navigation-wrapper .navigation .block-superfish .content ul li a:hover {
+.navbar-collapse nav .block-superfish .content ul li .nolink:hover, .navbar-collapse nav .block-superfish .content ul li a:hover {
     background-color: #022a3b;
     border-top: 2px solid #06a7ea;
     color: #06a7ea;
     text-decoration: none
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li .nolink.active, .navigation-wrapper .navigation .block-superfish .content ul li a.active {
+.navbar-collapse nav .block-superfish .content ul li .nolink.active, .navbar-collapse nav .block-superfish .content ul li a.active {
     border-top: 2px solid #06a7ea
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul {
+.navbar-collapse nav .block-superfish .content ul li ul {
     background-image: none;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -314,13 +314,13 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     width: 220px !important
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li {
+.navbar-collapse nav .block-superfish .content ul li ul li {
     float: none;
     display: block;
     min-width: 100%
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink, .navigation-wrapper .navigation .block-superfish .content ul li ul li a {
+.navbar-collapse nav .block-superfish .content ul li ul li .nolink, .navbar-collapse nav .block-superfish .content ul li ul li a {
     -webkit-transition: background-color 0.1s ease-in, padding-left 0.1s ease-in;
     -moz-transition: background-color 0.1s ease-in, padding-left 0.1s ease-in;
     -o-transition: background-color 0.1s ease-in, padding-left 0.1s ease-in;
@@ -334,7 +334,7 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     padding-top: 15px
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink.menuparent, .navigation-wrapper .navigation .block-superfish .content ul li ul li a.menuparent {
+.navbar-collapse nav .block-superfish .content ul li ul li .nolink.menuparent, .navbar-collapse nav .block-superfish .content ul li ul li a.menuparent {
     background-image: url("../img/arrow-right-white.png");
     background-position: 90%;
     background-size: 8px 11px;
@@ -342,39 +342,39 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink.menuparent, .navigation-wrapper .navigation .block-superfish .content ul li ul li a.menuparent {
+    .navbar-collapse nav .block-superfish .content ul li ul li .nolink.menuparent, .navbar-collapse nav .block-superfish .content ul li ul li a.menuparent {
         background-image: url("../img/arrow-right-white@2x.png") !important
     }
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink.menuparent:hover, .navigation-wrapper .navigation .block-superfish .content ul li ul li a.menuparent:hover {
+.navbar-collapse nav .block-superfish .content ul li ul li .nolink.menuparent:hover, .navbar-collapse nav .block-superfish .content ul li ul li a.menuparent:hover {
     background-image: url("../img/arrow-right-white.png") !important
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink.menuparent:hover, .navigation-wrapper .navigation .block-superfish .content ul li ul li a.menuparent:hover {
+    .navbar-collapse nav .block-superfish .content ul li ul li .nolink.menuparent:hover, .navbar-collapse nav .block-superfish .content ul li ul li a.menuparent:hover {
         background-image: url("../img/arrow-right-white@2x.png") !important
     }
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li .nolink:hover, .navigation-wrapper .navigation .block-superfish .content ul li ul li a:hover {
+.navbar-collapse nav .block-superfish .content ul li ul li .nolink:hover, .navbar-collapse nav .block-superfish .content ul li ul li a:hover {
     background-color: #06a7ea;
     padding-left: 25px
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li ul li ul {
+.navbar-collapse nav .block-superfish .content ul li ul li ul {
     left: 220px !important;
     margin-top: 0px
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li.sfHover .nolink, .navigation-wrapper .navigation .block-superfish .content ul li.sfHover a {
+.navbar-collapse nav .block-superfish .content ul li.sfHover .nolink, .navbar-collapse nav .block-superfish .content ul li.sfHover a {
     background-color: #022a3b;
     border-top: 2px solid #06a7ea;
     color: #06a7ea;
     text-decoration: none
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li.menuparent > .nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent > a {
+.navbar-collapse nav .block-superfish .content ul li.menuparent > .nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent > a {
     background-image: url("../img/arrow-bottom-black.png");
     background-position: 90% center;
     background-repeat: no-repeat;
@@ -383,22 +383,22 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation .block-superfish .content ul li.menuparent > .nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent > a {
+    .navbar-collapse nav .block-superfish .content ul li.menuparent > .nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent > a {
         background-image: url("../img/arrow-bottom-black@2x.png")
     }
 }
 
-.navigation-wrapper .navigation .block-superfish .content ul li.menuparent:hover > .sf-depth-1.nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent:hover > a.sf-depth-1, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent.sfHover > .sf-depth-1.nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent.sfHover > a.sf-depth-1 {
+.navbar-collapse nav .block-superfish .content ul li.menuparent:hover > .sf-depth-1.nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent:hover > a.sf-depth-1, .navbar-collapse nav .block-superfish .content ul li.menuparent.sfHover > .sf-depth-1.nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent.sfHover > a.sf-depth-1 {
     background-image: url("../img/arrow-bottom-white.png")
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation .block-superfish .content ul li.menuparent:hover > .sf-depth-1.nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent:hover > a.sf-depth-1, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent.sfHover > .sf-depth-1.nolink, .navigation-wrapper .navigation .block-superfish .content ul li.menuparent.sfHover > a.sf-depth-1 {
+    .navbar-collapse nav .block-superfish .content ul li.menuparent:hover > .sf-depth-1.nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent:hover > a.sf-depth-1, .navbar-collapse nav .block-superfish .content ul li.menuparent.sfHover > .sf-depth-1.nolink, .navbar-collapse nav .block-superfish .content ul li.menuparent.sfHover > a.sf-depth-1 {
         background-image: url("../img/arrow-bottom-white@2x.png")
     }
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language {
+.navbar-collapse nav #block-realia-blocks-realia-language {
     -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
@@ -406,16 +406,16 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     margin: 11px 0px 11px 0px
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default {
     position: relative
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default ul {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default ul {
     margin: 0px;
     padding: 0px
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.en a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default li.en a {
     background-image: url("../img/flags/United-Kingdom-Flag.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -424,12 +424,12 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.en a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default li.en a {
         background-image: url("../img/flags/United-Kingdom-Flag@2x.png")
     }
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.it a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default li.it a {
     background-image: url("../img/flags/Italy-Flag.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -438,12 +438,12 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.it a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default li.it a {
         background-image: url("../img/flags/Italy-Flag@2x.png")
     }
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.de a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default li.de a {
     background-image: url("../img/flags/Germany-Flag.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -452,12 +452,12 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.de a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default li.de a {
         background-image: url("../img/flags/Germany-Flag@2x.png")
     }
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.fr a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default li.fr a {
     background-image: url("../img/flags/France-Flag.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -466,17 +466,17 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default li.fr a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default li.fr a {
         background-image: url("../img/flags/France-Flag@2x.png")
     }
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .current ul {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .current ul {
     list-style: none;
     padding: 0px
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .current ul li {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .current ul li {
     background-color: #ffffff;
     background-image: url("../img/arrow-bottom-black.png");
     background-position: right center;
@@ -485,7 +485,7 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     border-right: 9px solid #ffffff
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .current ul li a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .current ul li a {
     color: #313131;
     display: block;
     text-decoration: none;
@@ -493,7 +493,7 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     width: 186px
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .expand {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .expand {
     display: none;
     position: absolute;
     right: 0px;
@@ -501,16 +501,16 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
     z-index: 999
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .expand ul {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .expand ul {
     background-color: #ffffff;
     list-style: none
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .expand ul li {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .expand ul li {
     display: block
 }
 
-.navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .expand ul li a {
+.navbar-collapse nav #block-realia-blocks-realia-language .content .default .expand ul li a {
     color: #313131;
     display: block;
     padding: 10px 35px 10px 25px;
@@ -519,17 +519,17 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .current ul li {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default .current ul li {
         background-image: url("../img/arrow-bottom-black@2x.png")
     }
 }
 
 @media (max-width: 1199px) {
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .current ul li a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default .current ul li a {
         width: 136px
     }
 
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language .content .default .expand ul li a {
+    .navbar-collapse nav #block-realia-blocks-realia-language .content .default .expand ul li a {
         width: 145px
     }
 }
@@ -544,28 +544,28 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
         width: 70%
     }
 
-    .navigation-wrapper .navigation .block-superfish {
+    .navbar-collapse nav .block-superfish {
         float: none
     }
 
-    .navigation-wrapper .navigation .block-superfish .content {
+    .navbar-collapse nav .block-superfish .content {
         float: none
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul {
+    .navbar-collapse nav .block-superfish .content ul {
         display: block;
         float: none;
         margin: 0px
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li {
+    .navbar-collapse nav .block-superfish .content ul li {
         clear: both;
         display: block;
         float: none;
         text-align: right
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li .nolink, .navigation-wrapper .navigation .block-superfish .content ul li a {
+    .navbar-collapse nav .block-superfish .content ul li .nolink, .navbar-collapse nav .block-superfish .content ul li a {
         background-image: none !important;
         border: 0px !important;
         color: #fff;
@@ -576,17 +576,17 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
         padding-top: 20px
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li .nolink:hover, .navigation-wrapper .navigation .block-superfish .content ul li a:hover {
+    .navbar-collapse nav .block-superfish .content ul li .nolink:hover, .navbar-collapse nav .block-superfish .content ul li a:hover {
         background-color: transparent;
         border: 0px !important
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li.sfHover a {
+    .navbar-collapse nav .block-superfish .content ul li.sfHover a {
         border: 0px !important;
         color: #ffffff
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li ul {
+    .navbar-collapse nav .block-superfish .content ul li ul {
         border-right: 2px solid #ffffff !important;
         display: block !important;
         float: none;
@@ -598,18 +598,18 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
         width: auto !important
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li ul li a {
+    .navbar-collapse nav .block-superfish .content ul li ul li a {
         border: 0px;
         font-size: 14px
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li ul li a:hover {
+    .navbar-collapse nav .block-superfish .content ul li ul li a:hover {
         background-color: transparent;
         border: 0px;
         color: #06a7ea !important
     }
 
-    .navigation-wrapper .navigation .block-superfish .content ul li ul li ul {
+    .navbar-collapse nav .block-superfish .content ul li ul li ul {
         border-right: 2px solid #ffffff !important;
         display: block !important;
         float: none;
@@ -621,9 +621,20 @@ button.form-submit:active, button.form-submit:focus, button.form-submit:hover {
         width: auto !important
     }
 
-    .navigation-wrapper .navigation #block-realia-blocks-realia-language {
+    .navbar-collapse nav #block-realia-blocks-realia-language {
         display: none
     }
+}
+
+.navbar-toggle {
+    /*background-image: url(../img/btn-nav@2x.png);*/
+    background-color: gray;
+    border-color: gray;
+    color: white;
+    font-size: 12px;
+}
+.navbar-toggle .icon-bar {
+ background-color: white;
 }
 
 #aviators-palette {
@@ -3077,11 +3088,12 @@ body.node-type-apartment section .block-views {
     background-color: #fff
 }
 
-#header-wrapper #header #header-inner .navbar {
-    margin: 0px
+#header-wrapper #header #header-inner .navbar-nav {
+    margin: 0px;
+    width: 100%;
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner {
     background-image: none;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -3099,7 +3111,7 @@ body.node-type-apartment section .block-views {
     padding: 0px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner #btn-nav {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner #btn-nav {
     background-image: url("../img/btn-nav.png");
     background-position: center center;
     background-repeat: no-repeat;
@@ -3113,25 +3125,25 @@ body.node-type-apartment section .block-views {
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner #btn-nav {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner #btn-nav {
         background-image: url("../img/btn-nav@2x.png")
     }
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .logo {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .logo {
     float: left;
     height: 90px;
     margin: 0px 15px 0px 0px;
     line-height: 90px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-name {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-name {
     float: left;
     height: 90px;
     line-height: 90px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-name .brand {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-name .brand {
     text-shadow: none;
     color: #022a3b;
     font-size: 24px;
@@ -3139,31 +3151,31 @@ body.node-type-apartment section .block-views {
     padding: 0px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-slogan {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-slogan {
     color: #b5b5b5;
     float: left;
     margin-top: 30px;
     margin-left: 15px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-slogan span {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-slogan span {
     border-left: 2px solid #f0f0f0;
     display: inline-block;
     line-height: 18px;
     padding-left: 15px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .info {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .info {
     float: left;
     padding-top: 12px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-phone {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone {
     float: none;
     line-height: 30px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-phone span {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone span {
     background-image: url("../img/icons/phone-gray.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -3174,12 +3186,12 @@ body.node-type-apartment section .block-views {
     padding-left: 30px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-email {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email {
     float: none;
     line-height: 30px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-email a {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email a {
     background-image: url("../img/icons/mail-gray.png");
     background-position: left center;
     background-repeat: no-repeat;
@@ -3191,20 +3203,20 @@ body.node-type-apartment section .block-views {
     text-decoration: none
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search {
     float: right;
     margin-left: 40px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search form {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form {
     margin: 27px 0px 0px 0px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search form label {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form label {
     display: none
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search form input {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form input {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     -ms-border-radius: 0px;
@@ -3214,7 +3226,7 @@ body.node-type-apartment section .block-views {
     width: 231px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search form button {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form button {
     background-image: none;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -3239,38 +3251,38 @@ body.node-type-apartment section .block-views {
     text-indent: -9999px
 }
 
-#header-wrapper #header #header-inner .navbar .navbar-inner .site-search form .control-group {
+#header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form .control-group {
     display: inline-block;
     margin: 0px
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-phone span {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone span {
         background-image: url("../img/icons/phone-gray@2x.png")
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-email a {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email a {
         background-image: url("../img/icons/mail-gray@2x.png")
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search form button {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form button {
         background-image: url("../img/icons/search@2x.png")
     }
 }
 
 @media (min-width: 1200px) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner .info {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .info {
         float: none;
         padding-top: 0px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-phone {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone {
         float: left;
         line-height: 90px;
         margin-left: 40px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-email {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email {
         float: left;
         line-height: 90px;
         margin-left: 40px
@@ -3278,72 +3290,72 @@ body.node-type-apartment section .block-views {
 }
 
 @media (max-width: 1199px) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner .info {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .info {
         float: right;
         padding-top: 12px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-phone {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone {
         float: none;
         line-height: 30px;
         margin-left: 0px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-phone span {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-phone span {
         font-size: 16px;
         padding-top: 1px;
         padding-bottom: 1px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-email {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email {
         float: none;
         line-height: 30px;
         margin-left: 0px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-email a {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-email a {
         font-size: 16px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search form input {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form input {
         width: 186px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search form button {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form button {
         margin: 0px 0px 0px -9px
     }
 }
 
 @media (max-width: 979px) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner .span4 {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .span4 {
         width: auto
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .info {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .info {
         display: none
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search form input {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form input {
         width: 131px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search form button {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search form button {
         float: right;
         width: 10px
     }
 }
 
 @media (max-width: 767px) {
-    #header-wrapper #header #header-inner .navbar .navbar-inner {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner {
         padding-left: 20px;
         padding-right: 20px
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-slogan {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-slogan {
         display: none
     }
 
-    #header-wrapper #header #header-inner .navbar .navbar-inner .site-search {
+    #header-wrapper #header #header-inner .navbar-nav .navbar-inner .site-search {
         display: none
     }
 }
