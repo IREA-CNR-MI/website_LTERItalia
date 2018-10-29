@@ -48,8 +48,8 @@ fonts[google_fonts_api][] = "Roboto Condensed&subset=cyrillic#300italic"
 fonts[google_fonts_api][] = "Roboto&subset=cyrillic#italic"
 fonts[google_fonts_api][] = "Roboto&subset=cyrillic#regular"
 
-stylesheets[all][] = css/bootstrap.css
-stylesheets[all][] = css/bootstrap-responsive.css
+;;stylesheets[all][] = css/bootstrap.css
+;;stylesheets[all][] = css/bootstrap-responsive.css
 stylesheets[all][] = css/jcarousel.css
 stylesheets[all][] = libraries/chosen/chosen/chosen.css
 stylesheets[all][] = css/style.css
@@ -57,6 +57,7 @@ stylesheets[all][] = css/realia-blue.css
 stylesheets[all][] = fonts/css/font-awesome.css
 stylesheets[all][] = fonts/css/font-awesome.min.css
 
+scripts[] = js/jquery-migrate-1.2.1.js
 scripts[] = js/jquery.currency.js
 scripts[] = js/jquery.ezmark.js
 scripts[] = js/retina.js
