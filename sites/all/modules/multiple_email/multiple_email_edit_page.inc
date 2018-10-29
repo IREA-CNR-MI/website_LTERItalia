@@ -9,9 +9,9 @@
  * Renders the page for adding a new e-mail address.
  *
  * @param object $account
- *  Loaded user account object.
+ *   Loaded user account object.
  * @param object $email
- *  Loaded e-mail object.
+ *   Loaded e-mail object.
  *
  * @return string
  */

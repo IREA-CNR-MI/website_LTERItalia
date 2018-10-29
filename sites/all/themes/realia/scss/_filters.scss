@@ -1,0 +1,76 @@
+.block-filter { @include shadow; background-color: $blue-light; margin-top: 30px; padding: 20px;
+    .title {
+        .block-title { color: #fff; font-weight: lighter; line-height: 1; margin: 0px 0px 10px 0px; }
+    }
+
+    form { margin: 0px;
+        .chzn-container { width: 100% !important; }
+        .views-exposed-widgets { margin: 0px; padding: 0px;
+            .views-exposed-widget { float: none; padding: 0px;
+                label { color: #fff; font-weight: medium; }
+
+                .form-item { margin-bottom: 15px;
+                    input[type=text] { @include box-sizing(border-box); border: 0px; height: 40px; width: 100%; }
+                    select { width: 100%; }
+                    .chzn-search {
+                        input { border: 1px solid $gray-light; }
+                    }
+                    &.form-type-bef-checkbox { float: left; width: 47%; }
+                }            
+            }
+
+            #edit-field-price-value-wrapper { clear: both; margin-bottom: 20px; 
+                .control-group { display: none; }
+                label { margin-bottom: 15px; text-indent: -9999px;
+                    .price { display: block; margin-top: -15px; text-align: center; text-indent: 0px; }
+                }
+            }
+
+            #edit-field-contract-type-tid-wrapper {
+                > label { display: none; }
+                .form-item {
+                    .control-group { float: left; width: 50%;
+                        .ez-checkbox { float: left; }
+                    }
+                }
+            }
+            #edit-field-bedrooms-value-wrapper, 
+            #edit-field-bathrooms-value-wrapper { float: left; width: 48%; }
+            #edit-field-bathrooms-value-wrapper { float: right; }
+
+            .form-item-field-price-value-min,
+            .form-item-field-price-value-max { display: none; }
+            .views-submit-button { clear: both; float: none; margin-top: 30px; padding: 0px;
+                button { @include background-image(none); @include transition(background-color .2s ease-in); background-color: $blue-dark; display: block; font-size: 18px; font-weight: medium; margin: 0px; padding: 12px 0px; width: 100%;
+                  &:hover { background-color: darken($blue-dark, 10%); }
+                }
+            }
+        }
+    }
+}
+
+#gmap-apartment-map, #map {
+  img { max-width: none; }
+  .row { position: absolute; right: 0px; z-index: 2; }
+  #block-views-exp-apartments-page { margin-top: 30px; }
+}
+
+@media (max-width: 979px) {
+  .block-filter {
+    form {
+      .views-exposed-widgets {
+        .bef-checkboxes {
+          .ez-checkbox { margin-right: 5px; }
+          label { font-size: 12px; }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  #map { padding-left: 20px; padding-right: 20px;
+    .region-map { display: none; }
+    .row { position: relative; }
+  }
+}

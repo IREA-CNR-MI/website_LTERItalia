@@ -12,11 +12,11 @@
  * text field.
  *
  * @param object $account
- *  Loaded user account object.
+ *   Loaded user account object.
  * @param object $email
- *  Loaded e-mail object.
+ *   Loaded e-mail object.
  * @param string $code
- *  Optional confirmation code.
+ *   Optional confirmation code.
  *
  * @return string
  */
@@ -29,7 +29,6 @@ function multiple_email_confirm_page($account, $email, $code = NULL) {
   }
   elseif (empty($user->uid)) {
     drupal_set_message(t('You must be signed in to confirm an address.'));
-    // TODO drupal_get_destination() needs to be an array of keys and values instead of a string.
     drupal_goto('user/login', array('query' => drupal_get_destination()));
   }
   else {
@@ -110,7 +109,7 @@ function multiple_email_confirm_form_validate($form, &$form_state) {
         ->fields(array(
           'confirm_code' => $email->confirm_code,
           'time_code_generated' => REQUEST_TIME,
-          'attempts' =>  0,
+          'attempts' => 0,
         ))
         ->condition('eid', $email->eid)
         ->execute();
@@ -140,11 +139,11 @@ function multiple_email_confirm_form_submit($form, &$form_state) {
  * Confirmation form for resending a confirmation code.
  *
  * @param array $form_state
- * FormAPI state array.
+ *   FormAPI state array.
  * @param object $account
- * Drupal user account object.
+ *   Drupal user account object.
  * @param object $email
- * Multiple E-Mails email object.
+ *   Multiple E-Mails email object.
  */
 function multiple_email_confirm_page_resend($form, &$form_state, $account, $email) {
   $msg = t('Please make sure that %email is correct. If not, please <a href="!delete">delete</a> it and add the correct address.', array(
@@ -152,8 +151,6 @@ function multiple_email_confirm_page_resend($form, &$form_state, $account, $emai
     '!delete' => url('user/' . $account->uid . '/edit/email-addresses/delete/' . $email->eid),
   ));
 
-  // TODO Should this redirect to the confirmation page or the address listing page?
-  $form_state['#redirect'] = 'user/' . $account->uid . '/edit/email-addresses/confirm/' . $email->eid;
   $form['#email'] = $email;
   $form['#account'] = $account;
 
@@ -166,15 +163,17 @@ function multiple_email_confirm_page_resend($form, &$form_state, $account, $emai
 function multiple_email_confirm_page_resend_submit($form, &$form_state) {
   $email = $form['#email'];
   $account = $form['#account'];
-  // Send a confirmation e-mail if one has not been sent within the specified days.
+  // Send a confirmation e-mail if one has not been sent within the specified
+  // days.
   $email->confirm_code = multiple_email_code();
   db_update('multiple_email')
     ->fields(array(
       'confirm_code' => $email->confirm_code,
       'time_code_generated' => REQUEST_TIME,
-      'attempts' =>  0,
+      'attempts' => 0,
     ))
     ->condition('eid', $email->eid)
     ->execute();
   multiple_email_send_confirmation($account, $email);
+  drupal_set_message(t('Check your %email email for your confirmation.', ['%email' => $email->email]));
 }

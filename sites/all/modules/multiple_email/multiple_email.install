@@ -22,7 +22,6 @@ function multiple_email_install() {
     FROM {users}
     WHERE uid != 0
     AND mail != ''
-    GROUP BY mail
   ");
 }
 
@@ -51,7 +50,7 @@ function multiple_email_uninstall() {
  */
 function multiple_email_enable() {
   drupal_set_message(t("Multiple E-mail settings are available under !link", array(
-    '!link' => l(t('Administer') . ' > ' . t('Configuration') . ' > ' . t('People') . ' > ' . t('Multiple E-mail'),  'admin/config/people/multiple-email'),
+    '!link' => l(t('Administer') . ' > ' . t('Configuration') . ' > ' . t('People') . ' > ' . t('Multiple E-mail'), 'admin/config/people/multiple-email'),
   )));
 }
 

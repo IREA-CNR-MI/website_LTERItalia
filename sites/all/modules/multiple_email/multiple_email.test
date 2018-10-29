@@ -8,6 +8,7 @@
  */
 
 class MultipleEmailUserTestCase extends DrupalWebTestCase {
+
   /**
    * Implementation of getInfo().
    */
@@ -147,9 +148,11 @@ class MultipleEmailUserTestCase extends DrupalWebTestCase {
     $this->assertNoRaw($this->loggedInUser->mail, 'Primary email was deleted from this view');
     $this->assertNoRaw($edit['email'], 'Secondary email was deleted from this view');
   }
+
 }
 
 class MultipleEmailBasicUserTestCase extends DrupalWebTestCase {
+
   /**
    * Implementation of getInfo().
    */
@@ -214,9 +217,11 @@ class MultipleEmailBasicUserTestCase extends DrupalWebTestCase {
     $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit/email-addresses/delete/' . $address->eid);
     $this->assertNoRaw(t('Are you sure you wish to delete the address %email from your user account?', array('%email' => $edit['mail'])));
   }
+
 }
 
 class MultipleEmailAdminUserTestCase extends DrupalWebTestCase {
+
   /**
    * Implementation of getInfo().
    */
@@ -266,9 +271,11 @@ class MultipleEmailAdminUserTestCase extends DrupalWebTestCase {
     $this->drupalPost('user/' . $this->basicuser->uid . '/edit', $edit, t('Save'));
     $this->assertRaw(t('The changes have been saved.'));
   }
+
 }
 
 class MultipleEmailLateInstallTestCase extends DrupalWebTestCase {
+
   /**
    * Implementation of getInfo().
    */
@@ -304,7 +311,7 @@ class MultipleEmailLateInstallTestCase extends DrupalWebTestCase {
     $this->assertText('Multiple E-mail Addresses', t('Multiple E-mail Addresses module found'));
     $this->drupalPost('admin/modules', array('modules[Other][multiple_email][enable]' => 'TRUE'), t('Save configuration'));
     $this->assertRaw(t("Multiple E-mail settings are available under !link",
-    array('!link' => l(t('Administer') .' > ' . t('Configuration') . ' > ' . t('People') . ' > ' . t('Multiple E-mail'),  'admin/config/people/multiple-email'))
+    array('!link' => l(t('Administer') . ' > ' . t('Configuration') . ' > ' . t('People') . ' > ' . t('Multiple E-mail'), 'admin/config/people/multiple-email'))
     ));
     $this->assertRaw('<input type="checkbox" id="edit-modules-other-multiple-email-enable" name="modules[Other][multiple_email][enable]" value="1" checked="checked" class="form-checkbox" />', t('Multiple E-mail Addresses module checkbox checked'));
 
@@ -340,7 +347,8 @@ class MultipleEmailLateInstallTestCase extends DrupalWebTestCase {
     // Verify access to multiple e-mail addresses.
     $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit/email-addresses');
     $this->assertText(t('Add new e-mail'));
-    drupal_load('module', 'multiple_email'); // Load freshly-enabled module code so API can be used.
+    // Load freshly-enabled module code so API can be used.
+    drupal_load('module', 'multiple_email');
     $address = multiple_email_find_address($this->loggedInUser->mail);
     $this->assertText($this->loggedInUser->mail);
     // emailuser should not have access to edit addresses.
@@ -358,4 +366,5 @@ class MultipleEmailLateInstallTestCase extends DrupalWebTestCase {
     $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
     $this->assertRaw('<input type="text" id="edit-mail" name="mail" value="' . $this->loggedInUser->mail . '" size="60" maxlength="254" class="form-text required" />');
   }
+
 }

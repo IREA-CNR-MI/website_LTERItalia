@@ -31,10 +31,14 @@ function multiple_email_manage($form, &$form_state, $account) {
       $form['addresses'][$email->eid]['confirm'] = array(
         '#type' => 'checkbox',
         '#title' => t('Confirm this e-mail (<a href="!resend">resend</a>)',
-          array('!resend' => url('user/' . $account->uid . '/edit/email-addresses/confirm/' . $email->eid . '/resend'))),
+          array('!resend' => url('user/' . $account->uid . '/edit/email-addresses/confirm/' . $email->eid . '/resend', array('query' => drupal_get_destination())))),
         '#default_value' => $email->confirmed,
-        // Does this make sense? //        '#disabled' => $email->primary_address,
       );
+      if ($email->primary_address) {
+        // The primary address can not be un-confirmed.
+        $form['addresses'][$email->eid]['confirm']['#disabled'] = TRUE;
+        $form['addresses'][$email->eid]['confirm']['#default_value'] = TRUE;
+      }
     }
   }
 
@@ -89,7 +93,7 @@ function multiple_email_manage_submit($form, &$form_state) {
           drupal_set_message(t('The address %email has been confirmed!', array('%email' => $email->email)));
         }
         else {
-          // TODO Provide appropraite message for unconfirming.
+          drupal_set_message(t('The address %email is no longer confirmed.', array('%email' => $email->email)));
         }
       }
     }
@@ -101,12 +105,12 @@ function multiple_email_manage_submit($form, &$form_state) {
 
     if ($eid) {
       if (user_access('administer multiple emails') && $form_state['values']['confirm'] == TRUE) {
-        $email = multiple_email_get_address($eid);
+        $email = multiple_email_load($eid);
         multiple_email_confirm_email($email);
         drupal_set_message(t('The address %email has been confirmed!', array('%email' => $email->email)));
       }
       else {
-        multiple_email_send_confirmation($account, multiple_email_get_address($eid));
+        multiple_email_send_confirmation($account, multiple_email_load($eid));
         drupal_set_message(t('The e-mail address %email has been added to your account. Check your e-mail in order to confirm this new address.',
           array('%email' => $form_state['values']['email'])));
       }
@@ -165,14 +169,14 @@ function theme_multiple_email_manage($variables) {
 
   if (empty($rows)) {
     $rows = array(array(
-        'class' => array('error'),
-        'data' => array(
-          array(
-            'colspan' => 3,
-            'data' => t('Unable to find any e-mail addresses.'),
-          ),
+      'class' => array('error'),
+      'data' => array(
+        array(
+          'colspan' => 3,
+          'data' => t('Unable to find any e-mail addresses.'),
         ),
-      ));
+      ),
+    ));
   }
 
   $rows[] = array(

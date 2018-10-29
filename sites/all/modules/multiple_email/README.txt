@@ -1,6 +1,6 @@
 Module: Multiple E-mail Addresses
 Original Author: Joshua Benner <joshbenner@gmail.com>
-Sponsor of Drupal 5 version: Rock River Star (www.rockriverstar.com) -- My employer
+Sponsor of Drupal 5 version: Rock River Star (www.rockriverstar.com)
 
 Drupal 6 version maintainer: Shawn DeArmond (http://drupal.org/user/77785)
 

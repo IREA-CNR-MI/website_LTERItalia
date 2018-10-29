@@ -1,0 +1,10 @@
+.block-simplenews { margin-bottom: 20px;
+  .content { @include shadow; background-color: #ffffff; padding: 20px;
+    form { margin: 0px;
+      label { font-weight: normal; padding: 0px; }
+      input[type=text] { @include box-sizing(border-box); height: 32px; line-height: 32px; width: 100%; }
+      button { margin-top: 15px; }
+      #edit-unsubscribe { display: none; }
+    }
+  }
+}

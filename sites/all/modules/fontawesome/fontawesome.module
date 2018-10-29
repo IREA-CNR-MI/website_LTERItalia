@@ -8,10 +8,10 @@
 define('FONTAWESOME_LIBRARY', 'fontawesome');
 define('FONTAWESOME_NAME', 'Font Awesome');
 define('FONTAWESOME_URL', 'https://fontawesome.com/');
-define('FONTAWESOME_CDN_CSS_URL', 'https://use.fontawesome.com/releases/v5.1.0/css/all.css');
-define('FONTAWESOME_CDN_SVG_URL', 'https://use.fontawesome.com/releases/v5.1.0/js/all.js');
-define('FONTAWESOME_CDN_SHIM_URL', 'https://use.fontawesome.com/releases/v5.1.0/js/v4-shims.js');
-define('FONTAWESOME_DOWNLOAD_URL', 'https://use.fontawesome.com/releases/v5.1.0/fontawesome-free-5.1.0-web.zip');
+define('FONTAWESOME_CDN_CSS_URL', 'https://use.fontawesome.com/releases/v5.4.1/css/all.css');
+define('FONTAWESOME_CDN_SVG_URL', 'https://use.fontawesome.com/releases/v5.4.1/js/all.js');
+define('FONTAWESOME_CDN_SHIM_URL', 'https://use.fontawesome.com/releases/v5.4.1/js/v4-shims.js');
+define('FONTAWESOME_DOWNLOAD_URL', 'https://use.fontawesome.com/releases/v5.4.1/fontawesome-free-5.4.1-web.zip');
 define('FONTAWESOME_PREFIX', 'fa');
 
 /**
@@ -58,11 +58,7 @@ function fontawesome_libraries_info() {
       'svg' => FONTAWESOME_CDN_SVG_URL,
       'shim' => FONTAWESOME_CDN_SHIM_URL,
     ),
-    'version arguments' => array(
-      'file' => 'README.md',
-      'pattern' => '/# Font Awesome ([0-9\.]+)/',
-      'lines' => 1,
-    ),
+    'version callback' => '_fontawesome_version',
   );
 
   // SVG wtih JS library.
@@ -96,6 +92,48 @@ function fontawesome_libraries_info() {
 }
 
 /**
+ * Callback to determine fontawesome version number.
+ */
+function _fontawesome_version() {
+  return '5.4.1';
+}
+
+/**
+ * Implements hook_preprocess_html_tag().
+ *
+ * Adds pseudoelements-required data-search-pseudo-elements tag.
+ */
+function fontawesome_preprocess_html_tag(&$vars) {
+  if ($vars['element']['#tag'] == 'script') {
+    $method = variable_get('fontawesome_method', 'svg');
+    // Check if this is SVG with pseudo-elements turned on.
+    if ($method == 'svg' && variable_get('fontawesome_allow_pseudo_elements', FALSE)) {
+      // Get settings.
+      $external_settings = variable_get('fontawesome_external', array(
+        'use_cdn' => TRUE,
+        'external_location' => '',
+      ));
+
+      // Check if we are using the CDN.
+      if ($external_settings['use_cdn']) {
+        $path = $external_settings['external_location'];
+      }
+      else {
+        $library = libraries_load(FONTAWESOME_LIBRARY . '_' . $method);
+        reset($library['files']['js']);
+        $path = $library['library path'] . '/' . key($library['files']['js']);
+      }
+
+      // Check if this is the javascript.
+      if (isset($vars['element']['#attributes']['src']) && strpos($vars['element']['#attributes']['src'], $path) !== FALSE) {
+        $vars['element']['#attributes']['data-search-pseudo-elements'] = TRUE;
+      }
+    }
+  }
+  return;
+}
+
+/**
  * Implements hook_preprocess_html().
  *
  * Purposefully only load on page requests and not hook_init(). This is
@@ -113,18 +151,6 @@ function fontawesome_preprocess_html() {
     'use_shim' => FALSE,
     'external_location' => '',
   ));
-
-  // Check if we need to load the pseudoelements JS.
-  // Handle loading CSS pseudo-elements in SVG mode.
-  if ($method == 'svg' && variable_get('fontawesome_allow_pseudo_elements', FALSE)) {
-    drupal_add_js('/' . drupal_get_path('module', 'fontawesome') . '/js/enablePseudoElements.js', array(
-      'type' => 'external',
-      'scope' => 'header',
-      'group' => JS_LIBRARY,
-      'every_page' => TRUE,
-      'weight' => -10,
-    ));
-  }
 
   // Check if we are using the CDN.
   if ($external_settings['use_cdn']) {
@@ -282,12 +308,12 @@ function fontawesome_extract_icons() {
         break;
       }
     }
-    $icons[$name] = [
+    $icons[$name] = array(
       'name' => $name,
       'type' => $type,
       'label' => $icon->label,
       'styles' => $icon->styles,
-    ];
+    );
   }
 
   return $icons;

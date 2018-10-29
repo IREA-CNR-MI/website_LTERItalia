@@ -2,7 +2,7 @@
 
 /**
  * @file
- * multiple_email views integration file
+ * Contains Views integration for the multiple_email module.
  */
 
 /**
@@ -74,13 +74,57 @@ function multiple_email_views_data() {
     'weight' => 10,
   );
 
-  // ----------------------------------------------------------------
-  // Fields
+  // Eid field.
+  $data['multiple_email']['eid'] = array(
+    'title' => t('eid'),
+    'help' => t('The email ID.'),
+    // Information for displaying the nid.
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
 
-  // E-mail address
+    // Information for accepting a nid as a filter.
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+
+    // Information for sorting on a nid.
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  // Uid field.
+  $data['multiple_email']['uid'] = array(
+    'title' => t('Owner uid'),
+    'help' => t('The user owning the e-mail address. If you need more fields than the uid add "content: owner relationship."'),
+    'relationship' => array(
+      'title' => t('Owner'),
+      'help' => t('Relate address to the user who owns it.'),
+      'handler' => 'views_handler_relationship',
+      'base' => 'users',
+      'field' => 'uid',
+      'label' => t('owner'),
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_user_name',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_numeric',
+    ),
+    'field' => array(
+      'handler' => 'views_handler_field_user',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  // E-mail address field.
   $data['multiple_email']['email'] = array(
-    'title' => t('Multiple E-mail Address'),
-    'help' => t('The multiple e-mail addresses that the user may have.'),
+    'title' => t('Address'),
+    'help' => t('The multiple e-mail address that the user may have.'),
     'field' => array(
       'handler' => 'views_handler_field_user_mail',
       'click sortable' => TRUE,
@@ -92,11 +136,13 @@ function multiple_email_views_data() {
     'sort' => array(
       'handler' => 'views_handler_sort',
     ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
   );
 
-
   if (module_exists('email')) {
-    // Match E-mail addresses to CCK e-mail field
+    // Match E-mail addresses to CCK e-mail field.
     $data['multiple_email']['email_match'] = array(
       'title' => t('Match E-mail Addresses'),
       'help' => t("Match current user's multiple e-mail addresses to CCK E-mail field."),
@@ -108,6 +154,44 @@ function multiple_email_views_data() {
     );
   }
 
+  // Time registered field.
+  $data['multiple_email']['time_registered'] = array(
+    'title' => t('Registration date'),
+    'help' => t('The date the e-mail address was registered.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort_date',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+  );
+
+  // Confirmed status field.
+  $data['multiple_email']['confirmed'] = array(
+    'title' => t('Confirmed'),
+    'help' => t('Whether or not the address has been confirmed.'),
+    'field' => array(
+      'handler' => 'views_handler_field_boolean',
+      'click sortable' => TRUE,
+      'output formats' => array(
+        'confirmed-unconfirmed' => array(t('Confirmed'), t('Not confirmed')),
+      ),
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_boolean_operator',
+      'label' => t('Confirmed'),
+      'type' => 'yes-no',
+      // Use `status = 1` instead of `status <> 0` in `WHERE` statement.
+      'use equal' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
   return $data;
 }
-

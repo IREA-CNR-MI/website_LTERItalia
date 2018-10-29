@@ -68,17 +68,17 @@ function fontawesome_drush_lib_download() {
   // Create the path if it does not exist yet. Added substr check for preventing
   // any wrong attempts or hacks !
   if (substr($path, -11) == 'fontawesome' && !is_dir($path)) {
-    drush_mkdir($path);
+    $pathlib = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
+    drush_mkdir($pathlib);
   }
   if (is_dir($path . '/css')) {
     drush_log(dt('Fontawesome already present at @path. No download required.', array('@path' => $path)), 'ok');
   }
-  elseif (drush_op('chdir', $path) &&
-      drush_shell_exec('wget %s -O fontawesome.zip', FONTAWESOME_DOWNLOAD_URL) &&
-      drush_shell_exec('unzip fontawesome.zip') &&
-      drush_shell_exec('mv Font-Awesome-*/.[!.]* .') &&
-      drush_shell_exec('mv Font-Awesome-*/* .') &&
-      drush_shell_exec('rm -r Font-Awesome-*')) {
+  elseif (drush_op('chdir', $pathlib) &&
+    drush_shell_exec('wget %s -O fontawesome.zip', FONTAWESOME_DOWNLOAD_URL) &&
+    drush_shell_exec('unzip fontawesome.zip') &&
+    drush_shell_exec('mv fontawesome-free-* fontawesome') &&
+    drush_shell_exec('rm fontawesome.zip')) {
     drush_log(dt('The latest Fontawesome library has been downloaded to @path', array('@path' => $path)), 'success');
   }
   else {

@@ -6,9 +6,10 @@
  */
 
 /**
- * Filter handler for the current user's e-mail addresses to match to a cck field
+ * Filter handler for the current user's e-mail addresses to match a field.
  */
 class multiple_email_handler_filter_current extends views_handler_filter_boolean_operator {
+
   function construct() {
     parent::construct();
     $this->value_value = t('Matches one of the multiple e-mail addresses of the logged in user');
@@ -32,4 +33,5 @@ class multiple_email_handler_filter_current extends views_handler_filter_boolean
     $where .= "IN ('" . implode("','", $addresses) . "') ";
     $this->query->add_where($this->options['group'], $where);
   }
+
 }
