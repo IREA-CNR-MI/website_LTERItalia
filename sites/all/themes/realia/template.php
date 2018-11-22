@@ -859,20 +859,20 @@ function realia_radio(&$variables) {
 /**
  * Returns the correct span class for a region
  */
-function _bootstrap_content_span($columns = 1) {
-  $class = FALSE;
-
-  switch($columns) {
-    case 1:
-      $class = 'col-md-12';
-      break;
-    case 2:
-      $class = 'col-md-9';
-      break;
-    case 3:
-      $class = 'col-md-6';
-      break;
-  }
-
-  return $class;
-}
+// function _bootstrap_content_span($columns = 1) {
+//   $class = FALSE;
+//
+//   switch($columns) {
+//     case 1:
+//       $class = 'col-md-12';
+//       break;
+//     case 2:
+//       $class = 'col-md-9';
+//       break;
+//     case 3:
+//       $class = 'col-md-6';
+//       break;
+//   }
+//
+//   return $class;
+// }
