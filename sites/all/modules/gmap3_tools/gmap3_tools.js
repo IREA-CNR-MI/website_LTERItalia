@@ -108,7 +108,8 @@
                     width: "280px"
                 },
                 closeBoxMargin: "0px 0px 0px 0px",
-                closeBoxURL: '/sites/default/themes/properta/img/icons/cross.png',
+                // closeBoxURL: '/sites/default/themes/properta/img/icons/cross.png',
+                closeBoxURL: '/sites/all/themes/realia/img/icons/cross.png',
                 infoBoxClearance: new google.maps.Size(1, 1),
                 isHidden: false,
                 pane: "floatPane",
@@ -129,7 +130,7 @@
                 position: position,
                 closeBoxURL: "",
                 isHidden: map.clustering.enable,
-                // pane: "mapPane",
+                pane: "mapPane", // This uncommented permit marker Infobox to showup on marker click
                 enableEventPropagation: true
             };
 
@@ -300,5 +301,3 @@
     };
 
 })(jQuery);
-
-
