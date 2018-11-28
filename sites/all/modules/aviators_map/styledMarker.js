@@ -4,277 +4,216 @@
  * @author Gabriel Schneider
  * @copyright (c) 2010 Gabriel Schneider
  * @fileoverview This gives you static functions for creating dynamically
- *     styled markers using Charts API outputs as well as an ability to
- *     extend with custom types.
+ *     sized and colored marker markers using Charts API outputs as well
+ *     as an ability to extend with custom types.
  */
 
-/**
- * Licensed under the Apache License, Version 2.0 (the 'License');
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+ * limitations under the License. 
  */
 
-var StyledIconTypes = {};
-var StyledMarker, StyledIcon;
+var StyledMarkerMaker = {
+	types: {},
+	setSize_: function(url,customtype,callback,shadow) {
+		var _image = document.createElement("img");
+		var _e = google.maps.event.addDomListener(_image, "load", function() {
+			if (shadow) {
+				customtype.shadowWidth = _image.width;
+				customtype.shadowHeight = _image.height;
+				callback(_image.width,_image.height);
+			} else {
+				customtype.width = _image.width;
+				customtype.height = _image.height;
+				callback(_image.width,_image.height);
+			}
+			google.maps.event.removeListener(_e);
+			_image = null;
+		});
+		_image.src = url;
+	},
+	create: function(opts) {
+		var _m, _i = document.createElement("img"), _s = document.createElement("img"), _ie, _se;
+		opts=opts||{};
+		
+		if (opts.customtype) {
+			opts.icon = "b";
+			//opts.icon = new google.maps.MarkerImage(opts.customtype.getURL(),null,null,opts.customtype.getAnchor());
+			//opts.shadow = new google.maps.MarkerImage(opts.customtype.getShadowURL(),null,null,opts.customtype.getShadowAnchor());
+			//opts.shape = opts.customtype.getShape();
+			_m=new google.maps.Marker(opts);
+			if (!opts.customtype.width) {
+				this.setSize_(opts.customtype.getURL(), opts.customtype, function(w,h) {
+					_m.setIcon(new google.maps.MarkerImage(opts.customtype.getURL(),null,null,opts.customtype.getAnchor(w,h)));
+					_m.setShape(opts.customtype.getShape(w,h));
+					_i = null;
+				});
+			}
+			if (!opts.customtype.shadowWidth) {
+				this.setSize_(opts.customtype.getShadowURL(), opts.customtype, function(w, h) {
+					_m.setShadow(new google.maps.MarkerImage(opts.customtype.getShadowURL(),null,null,opts.customtype.getShadowAnchor(w,h)));
+					_s = null;
+				}, true);
+			}
+			_i.src = opts.customtype.getURL();
+			_s.src = opts.customtype.getShadowURL();
+		} else {
+			_m=new google.maps.Marker(opts);
+		}
+		return _m;
+	}
+};
 
-/**
- * @param {Function} childCtor Child class.
- * @param {Function} parentCtor Parent class.
- */
-function inherits(childCtor, parentCtor) {
-    /** @constructor */
-    function tempCtor() {};
-    tempCtor.prototype = parentCtor.prototype;
-    childCtor.superClass_ = parentCtor.prototype;
-    childCtor.prototype = new tempCtor();
-    /** @override */
-    childCtor.prototype.constructor = childCtor;
-}
+StyledMarkerMaker.types.MARKER = function(opts) {
+	var me = this;
+	me.getURL = function(){
+		var _url;
+		if (opts.starcolor) {
+			_url = "http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=pin_star|";
+		} else {
+			_url = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=";
+		}
+		if (opts.text) {
+			opts.text = opts.text.substr(0,1);
+		}
+		_url+=(opts.text)?opts.text+"|":"|";
+		_url+=(opts.color)?opts.color+"|":"ff0000|";
+		_url+=(opts.fore)?opts.fore:"000000";
+		if (opts.starcolor) {
+			_url+="|"+opts.starcolor;
+		}
+		return _url;
+	};
+	me.getShadowURL = function(){
+		if (opts.starcolor) {
+			return "http://chart.apis.google.com/chart?chst=d_map_xpin_shadow&chld=pin_star";
+		} else {
+			return "http://chart.apis.google.com/chart?chst=d_map_pin_shadow";
+		}
+	};
+	me.getAnchor = function(width,height){
+		return new google.maps.Point(width / 2,height);
+	};
+	me.getShadowAnchor = function(width,height){
+		return new google.maps.Point(width / 4,height);
+	};
+	me.getShape = function(width,height){
+		var _iconmap = {};
+		_iconmap.coord = [
+			width / 2, height,
+			(7 / 16) * width, (5 / 8) * height,
+			(5 / 16) * width, (7 / 16) * height,
+			(7 / 32) * width, (5 / 16) * height,
+			(5 / 16) * width, (1 / 8) * height,
+			(1 / 2) * width, 0,
+			(11 / 16) * width, (1 / 8) * height,
+			(25 / 32) * width, (5 / 16) * height,
+			(11 / 16) * width, (7 / 16) * height,
+			(9 / 16) * width, (5 / 8) * height
+		];
+		for (var i = 0; i < _iconmap.coord.length; i++) {
+			_iconmap.coord[i] = parseInt(_iconmap.coord[i]);
+		}
+		_iconmap.type = "poly";
+		return _iconmap;
+	};
+};
 
-(function() {
-    var bu_ = 'https://chart.googleapis.com/chart?chst=';
-    var gm_ = google.maps;
-    var gp_ = gm_.Point;
-    var ge_ = gm_.event;
-    var gmi_ = gm_.MarkerImage;
+StyledMarkerMaker.types.BUBBLE = function(opts) {
+	var me = this;
+	me.getURL = function(){
+		var _url = "http://chart.apis.google.com/chart?chst=d_bubble_text_small&chld=bb|";
+		_url+=(opts.text)?opts.text+"|":"|";
+		_url+=(opts.color)?opts.color+"|":"ff0000|";
+		_url+=(opts.fore)?opts.fore:"000000";
+		return _url;
+	};
+	me.getShadowURL = function(){
+		return "http://chart.apis.google.com/chart?chst=d_bubble_text_small_shadow&chld=bb|" + (opts.text||'');
+	};
+	me.getAnchor = function(width,height){
+		return new google.maps.Point(0,42);
+	};
+	me.getShadowAnchor = function(width,height){
+		return new google.maps.Point(0,44);
+	};
+	me.getShape = function(width,height){
+		var _iconmap = {};
+		_iconmap.coord = [
+			0,44,
+			13,26,
+			13,6,
+			17,1,
+			width - 4,1,
+			width,6,
+			width,21,
+			width - 4,26,
+			21,26
+		];
+		for (var i = 0; i < _iconmap.coord.length; i++) {
+			_iconmap.coord[i] = parseInt(_iconmap.coord[i]);
+		}
+		_iconmap.type = "poly";
+		return _iconmap;
+	};
+};
 
+StyledMarkerMaker.types.FLAT = function(opts) {
+	var me = this;
+	var width = opts.width || 32;
+	var height = opts.height || 32;
+	var primaryColor = opts.primaryColor || "#ff0000";
+	var shadowColor = opts.shadowColor || "#000000";
+	var label = MapIconMaker.escapeUserText_(opts.label) || "";
+	var labelColor = opts.labelColor || "#000000";
+	var labelSize = opts.labelSize || 0;
+	var shape = opts.shape ||  "circle";
+	var shapeCode = (shape === "circle") ? "it" : "itr";
 
-    /**
-     * This class is an extended version of google.maps.Marker. It allows
-     * styles to be applied that change it's appearance.
-     * @extends google.maps.Marker
-     * @param {StyledMarkerOptions} StyledMarkerOptions The options for the Marker
-     */
-    StyledMarker = function(styledMarkerOptions) {
-        gm_.Marker.call(this);
-        var me=this;
-        var ci = me.styleIcon = styledMarkerOptions.styleIcon;
-        me.bindTo('icon',ci);
-        me.bindTo('shadow',ci);
-        me.bindTo('shape',ci);
-        me.setOptions(styledMarkerOptions);
-    };
-    inherits(StyledMarker, gm_.Marker);
-
-    /**
-     * This class stores style information that can be applied to StyledMarkers.
-     * @extends google.maps.MVCObject
-     * @param {StyledIconType} styledIconType The type of style this icon is.
-     * @param {StyledIconOptions} styledIconOptions The options for this StyledIcon.
-     * @param {StyledIcon} styleClass A class to apply extended style information.
-     */
-    StyledIcon = function(styledIconType,styledIconOptions,styleClass) {
-        var k;
-        var me=this;
-        var i_ = 'icon';
-        var sw_ = 'shadow';
-        var s_ = 'shape';
-        var a_ = [];
-
-        function gs_() {
-            var image_ = document.createElement('img');
-            var simage_ = document.createElement('img');
-            ge_.addDomListenerOnce(simage_, 'load', function() {
-                var w = simage_.width, h = simage_.height;
-                me.set(sw_,new gmi_(styledIconType.getShadowURL(me),null,null,styledIconType.getShadowAnchor(me,w,h)));
-                simage = null;
-            });
-            ge_.addDomListenerOnce(image_, 'load', function() {
-                var w = image_.width, h = image_.height;
-                me.set(i_,new gmi_(styledIconType.getURL(me),null,null,styledIconType.getAnchor(me,w,h)));
-                me.set(s_,styledIconType.getShape(me,w,h));
-                image_ = null;
-            });
-            image_.src = styledIconType.getURL(me);
-            simage_.src = styledIconType.getShadowURL(me);
-        }
-
-        /**
-         * set:
-         * This function sets a given style property to the given value.
-         * @param {String} name The name of the property to set.
-         * @param {Object} value The value to set the property to.
-         * get:
-         * This function gets a given style property.
-         * @param {String} name The name of the property to get.
-         * @return {Object}
-         */
-        me.as_ = function(v) {
-            a_.push(v);
-            for(k in styledIconOptions) {
-                v.set(k, styledIconOptions[k]);
-            }
-        }
-
-        if (styledIconType !== StyledIconTypes.CLASS) {
-            for (k in styledIconType.defaults) {
-                me.set(k, styledIconType.defaults[k]);
-            }
-            me.setValues(styledIconOptions);
-            me.set(i_,styledIconType.getURL(me));
-            me.set(sw_,styledIconType.getShadowURL(me));
-            if (styleClass) styleClass.as_(me);
-            gs_();
-            me.changed = function(k) {
-                if (k!==i_&&k!==s_&&k!==sw_) {
-                    gs_();
-                }
-            };
-        } else {
-            me.setValues(styledIconOptions);
-            me.changed = function(v) {
-                styledIconOptions[v] = me.get(v);
-                for (k = 0; k < a_.length; k++) {
-                    a_[k].set(v,me.get(v));
-                }
-            };
-            if (styleClass) styleClass.as_(me);
-        }
-    };
-    StyledIcon.prototype = new gm_.MVCObject();
-
-    /**
-     * StyledIconType
-     * This class holds functions for building the information needed to style markers.
-     * getURL:
-     * This function builds and returns a URL to use for the Marker icon property.
-     * @param {StyledIcon} icon The StyledIcon that holds style information
-     * @return {String}
-     * getShadowURL:
-     * This function builds and returns a URL to use for the Marker shadow property.
-     * @param {StyledIcon} icon The StyledIcon that holds style information
-     * @return {String{
-  * getAnchor:
-  * This function builds and returns a Point to indicate where the marker is placed.
-  * @param {StyledIcon} icon The StyledIcon that holds style information
-     * @param {Number} width The width of the icon image.
-     * @param {Number} height The height of the icon image.
-     * @return {google.maps.Point}
-     * getShadowAnchor:
-     * This function builds and returns a Point to indicate where the shadow is placed.
-     * @param {StyledIcon} icon The StyledIcon that holds style information
-     * @param {Number} width The width of the shadow image.
-     * @param {Number} height The height of the shadow image.
-     * @return {google.maps.Point}
-     * getShape:
-     * This function builds and returns a MarkerShape to indicate where the Marker is clickable.
-     * @param {StyledIcon} icon The StyledIcon that holds style information
-     * @param {Number} width The width of the icon image.
-     * @param {Number} height The height of the icon image.
-     * @return {google.maps.MarkerShape}
-     */
-
-    StyledIconTypes.CLASS = {};
-
-    StyledIconTypes.MARKER = {
-        defaults: {
-            text:'',
-            color:'00ff00',
-            fore:'000000',
-            starcolor:null
-        },
-        getURL: function(props){
-            var _url;
-            var starcolor_=props.get('starcolor');
-            var text_=props.get('text');
-            var color_=props.get('color').replace(/#/,'');
-            var fore_=props.get('fore').replace(/#/,'');
-            if (starcolor_) {
-                _url = bu_ + 'd_map_xpin_letter&chld=pin_star|';
-            } else {
-                _url = bu_ + 'd_map_pin_letter&chld=';
-            }
-            if (text_) {
-                text_ = text_.substr(0,2);
-            }
-            _url+=text_+'|';
-            _url+=color_+'|';
-            _url+=fore_;
-            if (starcolor_) {
-                _url+='|'+starcolor_.replace(/#/,'');
-            }
-            return _url;
-        },
-        getShadowURL: function(props){
-            if (props.get('starcolor')) {
-                return bu_ + 'd_map_xpin_shadow&chld=pin_star';
-            } else {
-                return bu_ + 'd_map_pin_shadow';
-            }
-        },
-        getAnchor: function(props,width,height){
-            return new gp_(width / 2,height);
-        },
-        getShadowAnchor: function(props,width,height){
-            return new gp_(width / 4,height);
-        },
-        getShape: function(props,width,height){
-            var _iconmap = {};
-            _iconmap.coord = [
-                width / 2, height,
-                (7 / 16) * width, (5 / 8) * height,
-                (5 / 16) * width, (7 / 16) * height,
-                (7 / 32) * width, (5 / 16) * height,
-                (5 / 16) * width, (1 / 8) * height,
-                (1 / 2) * width, 0,
-                (11 / 16) * width, (1 / 8) * height,
-                (25 / 32) * width, (5 / 16) * height,
-                (11 / 16) * width, (7 / 16) * height,
-                (9 / 16) * width, (5 / 8) * height
-            ];
-            for (var i = 0; i < _iconmap.coord.length; i++) {
-                _iconmap.coord[i] = Math.round(_iconmap.coord[i]);
-            }
-            _iconmap.type = 'poly';
-            return _iconmap;
-        }
-    };
-    StyledIconTypes.BUBBLE = {
-        defaults: {
-            text:'',
-            color:'00ff00',
-            fore:'000000'
-        },
-        getURL: function(props){
-            var _url = bu_ + 'd_bubble_text_small&chld=bb|';
-            _url+=props.get('text')+'|';
-            _url+=props.get('color').replace(/#/,'')+'|';
-            _url+=props.get('fore').replace(/#/,'');
-            return _url;
-        },
-        getShadowURL: function(props){
-            return bu_ + 'd_bubble_text_small_shadow&chld=bb|' + props.get('text');
-        },
-        getAnchor: function(props,width,height){
-            return new google.maps.Point(0,42);
-        },
-        getShadowAnchor: function(props,width,height){
-            return new google.maps.Point(0,44);
-        },
-        getShape: function(props,width,height){
-            var _iconmap = {};
-            _iconmap.coord = [
-                0,44,
-                13,26,
-                13,6,
-                17,1,
-                width - 4,1,
-                width,6,
-                width,21,
-                width - 4,26,
-                21,26
-            ];
-            _iconmap.type = 'poly';
-            return _iconmap;
-        }
-    };
-})();
-
+	me.getURL = function(){
+		var _url = "http://chart.apis.google.com/chart?cht=" + shapeCode;
+		_url+="&chs=" + width + "x" + height + 
+		      "&chco=" + primaryColor.replace("#", "") + "," + 
+		      shadowColor.replace("#", "") + "ff,ffffff01" +
+		      "&chl=" + label + "&chx=" + labelColor.replace("#", "") + 
+		      "," + labelSize + "&chf=bg,s,00000000" + "&ext=.png";
+		return _url;
+	};
+	me.getShadowURL = function(){
+		return "";
+	};
+	me.getAnchor = function(){
+		return new google.maps.Point((width / 2, height / 2));
+	};
+	me.getShadowAnchor = function(width,height){
+		return new google.maps.Point(0,0);
+	};
+	me.getShape = function(){
+		var _iconmap = {};
+		if (shapeCode === "itr") {
+			_iconmap.coord = [0, 0, width, 0, width, height, 0, height];
+		} else {
+			_iconmap.coord = [];
+			var polyNumSides = 8;
+			var polySideLength = 360 / polyNumSides;
+			var polyRadius = Math.min(width, height) / 2;
+			for (var a = 0; a < (polyNumSides + 1); a++) {
+				var aRad = polySideLength * a * (Math.PI / 180);
+				var pixelX = polyRadius + polyRadius * Math.cos(aRad);
+				var pixelY = polyRadius + polyRadius * Math.sin(aRad);
+				_iconmap.coord.push(parseInt(pixelX), parseInt(pixelY));
+			}
+		}
+		_iconmap.type = "poly";
+		return _iconmap;
+	};
+};
